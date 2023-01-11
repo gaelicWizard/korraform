@@ -1,13 +1,9 @@
-provider "aws" {
-  region = local.location
-}
-
 
 module "codepipeline" {
   source                  = "../modules/DEV/codepipeline"
   for_each                = local.deployment
   repository_in           = each.value.repo
-  branch_in		  = each.value.branch
+  branch_in               = each.value.branch
   name_in                 = each.key
   codebuild_project_name  = module.codebuild.codebuild_project_name
   s3_bucket_name          = module.s3.s3_bucket
