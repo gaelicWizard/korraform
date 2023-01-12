@@ -2,11 +2,13 @@ locals {
   location     = "us-east-1"
   project_name = "korraform"
 
+  subnets = {
+    "${local.location}-air" = "172.16.0.0/21"
+    "${local.location}-fire" = "172.16.8.0/21"
+    "${local.location}-water" = "172.16.16.0/21"
+  }
+
   deployment = {
-    Sample = {
-      repo   = "ilsaTi/docker-simple-webpage"
-      branch = "master"
-    }
     Example = {
       repo   = "gaelicWizard/korraform"
       branch = "main"
@@ -22,7 +24,6 @@ locals {
   }
 
   codebuild_params = {
-    "NAME"  = "codebuild-demo-terraform"
     image   = "aws/codebuild/standard:4.0"
     type    = "LINUX_CONTAINER"
     compute = "BUILD_GENERAL1_SMALL"
