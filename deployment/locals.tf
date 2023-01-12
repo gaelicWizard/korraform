@@ -1,6 +1,6 @@
 locals {
   location     = "us-east-1"
-  project_name = "Legend-of-Korra"
+  project_name = "korraform"
 
   deployment = {
     Sample = {
@@ -19,5 +19,19 @@ locals {
       repo   = "GitHub-Account-Name/Repo-4-Name"
       branch = "main"
     }
+  }
+
+  codebuild_params = {
+    "NAME"  = "codebuild-demo-terraform"
+    image   = "aws/codebuild/standard:4.0"
+    type    = "LINUX_CONTAINER"
+    compute = "BUILD_GENERAL1_SMALL"
+    cred    = "CODEBUILD"
+  }
+
+  environment_variables = {
+    "AWS_DEFAULT_REGION" = local.location
+    "IMAGE_REPO_NAME"    = "demo"
+    "IMAGE_TAG"          = "latest"
   }
 }

@@ -14,6 +14,8 @@ module "codepipeline" {
 module "codebuild" {
   source                 = "../modules/DEV/codebuild"
   codebuild_project_name = local.project_name
+  environment_variables  = local.environment_variables
+  codebuild_params       = local.codebuild_params
 }
 
 module "codestar_connection" {
