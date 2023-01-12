@@ -1,13 +1,13 @@
 # VPC with subnets and gateway
 
 resource "aws_vpc" "Korra" {
-  cidr_block = local.subnets."${var.region}-air"
+  cidr_block = "${element(values(var.subnets), 0)}"
 
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name = "main-vpc"
+    Name = "${var.name}-vpc"
   }
 }
 
@@ -15,20 +15,20 @@ resource "aws_internet_gateway" "Appa" {
   vpc_id = "${aws_vpc.Korra.id}"
 
   tags = {
-    Name = "main-internet-gateway"
+    Name = "${var.name}-internet-gateway"
   }
 }
 
 resource "aws_subnet" "nations" {
-  count      = "${length(local.subnets)}"
-  cidr_block = "${element(values(local.subnets), count.index)}"
+  count      = "${length(var.subnets)}"
+  cidr_block = "${element(values(var.subnets), count.index)}"
   vpc_id     = "${aws_vpc.Korra.id}"
 
   map_public_ip_on_launch = true
-  availability_zone       = "${element(keys(local.subnets), count.index)}"
+  availability_zone       = "${element(keys(var.subnets), count.index)}"
 
   tags = {
-    Name = "${element(keys(local.subnets), count.index)}"
+    Name = "${element(keys(var.subnets), count.index)}"
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_route_table" "nations" {
   vpc_id = "${aws_vpc.Korra.id}"
 
   tags = {
-    Name = "main-route-table"
+    Name = "${var.name}-route-table"
   }
 }
 
@@ -47,7 +47,7 @@ resource "aws_route" "seasons" {
 }
 
 resource "aws_route_table_association" "elements" {
-  count          = "${length(local.subnets)}"
+  count          = "${length(var.subnets)}"
   route_table_id = "${aws_route_table.nations.id}"
   subnet_id      = "${element(aws_subnet.nations.*.id, count.index)}"
 }

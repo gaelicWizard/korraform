@@ -1,4 +1,11 @@
 
+module "vpc" {
+	source = "../modules/vpc"
+	name = local.project_name
+	subnets = local.subnets
+	region = local.location
+}
+
 module "ecr" {
   source   = "../modules/ecr"
   ecr_name = local.project_name
