@@ -1,4 +1,9 @@
 
+module "ecr" {
+  source = "../modules/DEV/ecr"
+  ecr_name = local.project_name
+}
+
 module "codepipeline" {
   source                  = "../modules/DEV/codepipeline"
   for_each                = local.deployment

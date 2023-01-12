@@ -31,7 +31,7 @@ locals {
 
   environment_variables = {
     "AWS_DEFAULT_REGION" = local.location
-    "IMAGE_REPO_NAME"    = "demo"
+    "IMAGE_REPO_NAME"    = local.project_name
     "IMAGE_TAG"          = "latest"
   }
 }
