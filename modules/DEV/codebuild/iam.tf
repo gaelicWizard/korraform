@@ -1,3 +1,7 @@
+data "local_file" "policy" {
+  filename = "${path.module}/iam.json"
+}
+
 resource "aws_iam_role" "codebuildrole" {
     assume_role_policy    = jsonencode(
         {
@@ -22,71 +26,9 @@ resource "aws_iam_role" "codebuildrole" {
     max_session_duration  = 3600
     name                  = "CodeBuildRole"
 
-    inline_policy {
-        name   = "CodeBuild"
-        policy = jsonencode(
-            {
-                Statement = [
-                    {
-                        Action   = [
-                            "logs:CreateLogGroup",
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents",
-                        ]
-                        Effect   = "Allow"
-                        Resource = [
-                            "*",
-                        ]
-                    },
-                    {
-                        Action   = [
-                            "s3:PutObject",
-                            "s3:GetObject",
-                            "s3:GetObjectVersion",
-                            "s3:GetBucketAcl",
-                            "s3:GetBucketLocation",
-                        ]
-                        Effect   = "Allow"
-                        Resource = [
-                            "arn:aws:s3:::codepipeline-us-east-1-*",
-                        ]
-                    },
-                    {
-                        Action   = [
-                            "lambda:GetAlias",
-                            "lambda:ListVersionsByFunction",
-                        ]
-                        Effect   = "Allow"
-                        Resource = [
-                            "*",
-                        ]
-                    },
-                    {
-                        Action   = [
-                            "cloudformation:GetTemplate",
-                        ]
-                        Effect   = "Allow"
-                        Resource = [
-                            "*",
-                        ]
-                    },
-                    {
-                        Action   = [
-                            "codebuild:CreateReportGroup",
-                            "codebuild:CreateReport",
-                            "codebuild:UpdateReport",
-                            "codebuild:BatchPutTestCases",
-                            "codebuild:BatchPutCodeCoverages",
-                        ]
-                        Effect   = "Allow"
-                        Resource = [
-                            "*",
-                        ]
-                    },
-                ]
-                Version   = "2012-10-17"
-            }
-        )
-    }
 }
 
+resource "aws_iam_role_policy" "example" {
+  role = aws_iam_role.codebuildrole.name
+  policy = replace(replace(data.local_file.policy.content, "ACCOUNT_ID", "${data.aws_caller_identity.default.account_id}"), "CODEBUILD_NAME", var.codebuild_project_name) 
+}
