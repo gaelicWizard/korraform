@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "pipeline" {
  name = "${var.name_in}"
-  role_arn = var.iam_role_arn
+  role_arn = aws_iam_role.codepipeline.arn
 
   artifact_store {
     location = var.s3_bucket_name
@@ -72,7 +72,7 @@ resource "aws_codepipeline" "pipeline" {
         ActionMode    = "CHANGE_SET_REPLACE"
         StackName     = "${var.name_in}"
         ChangeSetName = "${var.name_in}-changes"
-        RoleArn       = var.iam_role_arn
+        RoleArn       = aws_iam_role.codepipeline.arn
         TemplatePath  = "build_output::outputtemplate.yml"
       }
     }

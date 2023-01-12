@@ -6,7 +6,7 @@ variable "repository_in" {
 variable "branch_in" {
 }
 
-variable "name_in"{  
+variable "name_in" {  
 }
 
 # Deployment details
@@ -21,9 +21,6 @@ variable "namespace" {
 # S3 Bucket, IAM Role, Codestar Connection
 
 variable "s3_bucket_name" {
-}
-
-variable "iam_role_arn" {
 }
 
 variable "codestar_connection_arn" {

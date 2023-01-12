@@ -1,6 +1,6 @@
 
 module "ecr" {
-  source = "../modules/ecr"
+  source   = "../modules/ecr"
   ecr_name = local.project_name
 }
 
@@ -12,7 +12,6 @@ module "codepipeline" {
   name_in                 = each.key
   codebuild_project_name  = module.codebuild.codebuild_project_name
   s3_bucket_name          = module.s3.s3_bucket
-  iam_role_arn            = module.iam.role_arn
   codestar_connection_arn = module.codestar_connection.codestar_arn
 }
 
@@ -25,10 +24,6 @@ module "codebuild" {
 
 module "codestar_connection" {
   source = "../modules/codestar_connection"
-}
-
-module "iam" {
-  source = "../modules/iam"
 }
 
 module "s3" {
