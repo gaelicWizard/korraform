@@ -6,6 +6,17 @@ module "vpc" {
 	region = local.location
 }
 
+module "ecs" {
+	source = "../modules/ecs"
+	vpc_id = module.vpc.vpc_id
+	region = local.location
+	container_group = "Korro"
+	container_name = "Legend"
+	subnets = local.subnets
+	lb_group = module.elb.group
+	lb_target = module.elb.target
+}
+
 module "ecr" {
   source   = "../modules/ecr"
   ecr_name = local.project_name
