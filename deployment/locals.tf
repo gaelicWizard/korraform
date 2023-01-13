@@ -3,9 +3,9 @@ locals {
   project_name = "korraform"
 
   subnets = {
-    "${local.location}-air" = "172.16.0.0/21"
-    "${local.location}-fire" = "172.16.8.0/21"
-    "${local.location}-water" = "172.16.16.0/21"
+    "${local.location}a" = "172.16.0.0/21"
+    "${local.location}b" = "172.16.8.0/21"
+    "${local.location}c" = "172.16.16.0/21"
   }
 
   deployment = {
