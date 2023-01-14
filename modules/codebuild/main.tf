@@ -1,7 +1,7 @@
 resource "aws_codebuild_project" "CodeBuild_Project" {
     name = var.codebuild_project_name
     build_timeout = 120
-    encryption_key         = aws_kms_key.codebuild.arn
+#    encryption_key         = aws_kms_key.codebuild.arn
     service_role           = aws_iam_role.codebuildrole.arn
 
     artifacts {
