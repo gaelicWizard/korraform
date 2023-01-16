@@ -6,7 +6,7 @@ variable "repository_in" {
 variable "branch_in" {
 }
 
-variable "name_in" {  
+variable "name_in" {
 }
 
 # Deployment details

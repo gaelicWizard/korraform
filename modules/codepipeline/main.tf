@@ -1,5 +1,5 @@
 resource "aws_codepipeline" "pipeline" {
- name = "${var.name_in}"
+  name     = var.name_in
   role_arn = aws_iam_role.codepipeline.arn
 
   artifact_store {
@@ -22,7 +22,7 @@ resource "aws_codepipeline" "pipeline" {
         ConnectionArn    = var.codestar_connection_arn
         FullRepositoryId = "${var.repository_in}"
         BranchName       = "${var.branch_in}"
-        }
+      }
     }
   }
 
@@ -46,15 +46,15 @@ resource "aws_codepipeline" "pipeline" {
   }
 
   stage {
-  name = "Manual_Approval"
-  action {
-    name     = "Manual-Approval"
-    category = "Approval"
-    owner    = "AWS"
-    provider = "Manual"
-    version  = "1"
+    name = "Manual_Approval"
+    action {
+      name     = "Manual-Approval"
+      category = "Approval"
+      owner    = "AWS"
+      provider = "Manual"
+      version  = "1"
+    }
   }
-}
 
   stage {
     name = "Deploy"

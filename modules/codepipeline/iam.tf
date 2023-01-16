@@ -1,5 +1,5 @@
 resource "aws_iam_role" "codepipeline" {
-  name = "CodePipelineRole"
+  name               = "CodePipelineRole"
   assume_role_policy = data.aws_iam_policy_document.cp_assume_role_policy.json
 }
 

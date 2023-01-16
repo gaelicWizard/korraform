@@ -1,20 +1,20 @@
 resource "aws_codebuild_project" "CodeBuild_Project" {
-    name = var.codebuild_project_name
-    build_timeout = 120
-#    encryption_key         = aws_kms_key.codebuild.arn
-    service_role           = aws_iam_role.codebuildrole.arn
+  name          = var.codebuild_project_name
+  build_timeout = 120
+  #    encryption_key         = aws_kms_key.codebuild.arn
+  service_role = aws_iam_role.codebuildrole.arn
 
-    artifacts {
-        name                   = var.codebuild_project_name
-        override_artifact_name = false
-        packaging              = "NONE"
-        type                   = "CODEPIPELINE"
-    }
+  artifacts {
+    name                   = var.codebuild_project_name
+    override_artifact_name = false
+    packaging              = "NONE"
+    type                   = "CODEPIPELINE"
+  }
 
-    source {
-        git_clone_depth     = 0
-        type                = "CODEPIPELINE"
-    }
+  source {
+    git_clone_depth = 0
+    type            = "CODEPIPELINE"
+  }
 
   environment {
     image                       = var.codebuild_params.image
@@ -24,8 +24,8 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
     privileged_mode             = true
 
     environment_variable {
-        name  = "AWS_ACCOUNT_ID"
-        value  = "${data.aws_caller_identity.default.account_id}"
+      name  = "AWS_ACCOUNT_ID"
+      value = data.aws_caller_identity.default.account_id
     }
 
     dynamic "environment_variable" {
@@ -37,9 +37,9 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
     }
   }
 
-    logs_config {
-        cloudwatch_logs {
-            status = "ENABLED"
+  logs_config {
+    cloudwatch_logs {
+      status      = "ENABLED"
       group_name  = "log-group"
       stream_name = "log-stream"
     }
