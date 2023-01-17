@@ -1,17 +1,18 @@
 resource "aws_codebuild_project" "CodeBuild_Project" {
-  name          = var.codebuild_project_name
+  name          = var.image_name
   service_role = aws_iam_role.codebuildrole.arn
 
   artifacts {
-    name                   = var.codebuild_project_name
-    override_artifact_name = false
+    name                   = var.image_name
+    override_artifact_name = true
     packaging              = "NONE"
     type                   = "CODEPIPELINE"
   }
 
   source {
-    git_clone_depth = 0
+    git_clone_depth = 1
     type            = "CODEPIPELINE"
+		buildspec       = file("buildspec.yaml")
   }
 
   environment {
@@ -25,6 +26,11 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
       name  = "AWS_ACCOUNT_ID"
       value = data.aws_caller_identity.default.account_id
     }
+		
+		environment_variable {
+			name = "IMAGE_REPO_NAME"
+			value = "${var.project_name}/${var.image_name}"
+		}
 
     dynamic "environment_variable" {
       for_each = var.environment_variables
@@ -48,8 +54,8 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
   }
 }
 
-output "codebuild_project_name" {
-  value = var.codebuild_project_name
+output "image_name" {
+  value = var.image_name
 }
 
 data "aws_caller_identity" "default" {}

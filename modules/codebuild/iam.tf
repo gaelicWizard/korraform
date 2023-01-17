@@ -1,3 +1,6 @@
+/* Create the role for CodeBuild to access the source code and store the build result.
+ */
+
 data "local_file" "policy" {
   filename = "${path.module}/iam.json"
 }
@@ -30,5 +33,5 @@ resource "aws_iam_role" "codebuildrole" {
 
 resource "aws_iam_role_policy" "example" {
   role   = aws_iam_role.codebuildrole.name
-  policy = replace(replace(data.local_file.policy.content, "ACCOUNT_ID", "${data.aws_caller_identity.default.account_id}"), "CODEBUILD_NAME", var.codebuild_project_name)
+  policy = replace(replace(data.local_file.policy.content, "ACCOUNT_ID", "${data.aws_caller_identity.default.account_id}"), "CODEBUILD_NAME", var.codebuild_image_name)
 }

@@ -1,6 +1,11 @@
 
-variable "codebuild_project_name" {
+variable "image_name" {
+	description = "Name for image"
+	type = string
+}
+variable "project_name" {
   description = "Name for CodeBuild Project"
+	type = string
 }
 
 variable "environment_variables" {
