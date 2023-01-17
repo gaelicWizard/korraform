@@ -1,11 +1,20 @@
+/**/
+terraform {
+  cloud {
+    workspaces {
+      tags = ["korraform"]
+    }
+  }
+} /**/
 
 module "vpc" {
-	source = "../modules/vpc"
-	name = local.project_name
-	subnets = local.subnets
-	region = local.location
+  source  = "../modules/vpc"
+  name    = "${local.project_name}-${terraform.workspace}"
+  subnets = local.subnets
+  region  = local.location
 }
 
+/*
 module "ecs" {
 	source = "../modules/ecs"
 	vpc_id = module.vpc.vpc_id
@@ -13,13 +22,12 @@ module "ecs" {
 	container_group = "Korro"
 	container_name = "Legend"
 	subnets = local.subnets
-	lb_group = module.elb.group
-	lb_target = module.elb.target
-}
+	lb_target_group = module.elb.aws_lb_target_group.?.*.arn
+}/**/
 
 module "ecr" {
   source   = "../modules/ecr"
-  ecr_name = local.project_name
+  ecr_name = "${local.project_name}-${terraform.workspace}"
 }
 
 module "codepipeline" {

@@ -1,39 +1,39 @@
-
-data "aws_ecr_repository" "this" {
-  name = "snowiow/${var.container_group}"
+# Elastic Container Service
+data "aws_ecr_repository" "ECS" {
+  name = "${local.project}/${var.name}"
 }
 
-resource "aws_cloudwatch_log_group" "this" {
-  name = "${var.container_group}"
+resource "aws_cloudwatch_log_group" "ECS" {
+  name = var.project
 }
 
 module "container_definition" {
-  source  = "cloudposse/ecs-container-definition/aws"
-#  version = "0.13.0"
+  source = "cloudposse/ecs-container-definition/aws"
+  #  version = "0.13.0"
 
-  container_name  = "${var.container_name}"
+  container_name  = var.name
   container_image = "${data.aws_ecr_repository.this.repository_url}:latest"
 
   port_mappings = [
     {
       containerPort = 80
-	  hostPort = 80
-	  protocol = "tcp"
+      hostPort      = 80
+      protocol      = "tcp"
     },
   ]
 
   log_configuration = {
-    awslogs-region        = "${var.region}"
-    awslogs-group         = "${var.container_group}"
-    awslogs-stream-prefix = "ecs-service"
+    awslogs-region        = var.region
+    awslogs-group         = var.project
+    awslogs-stream-prefix = local.name
   }
 }
 
-resource "aws_ecs_cluster" "this" {
-  name = "example-cluster"
+resource "aws_ecs_cluster" "ECS" {
+  name = local.project
 }
 
-data "aws_iam_policy_document" "assume_by_ecs" {
+data "aws_iam_policy_document" "ECS" {
   statement {
     sid     = "AllowAssumeByEcsTasks"
     effect  = "Allow"
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "execution_role" {
       "ecr:BatchCheckLayerAvailability",
     ]
 
-    resources = ["${data.aws_ecr_repository.this.arn}"]
+    resources = ["${data.aws_ecr_repository.ECS.arn}"]
   }
 
   statement {
@@ -89,44 +89,44 @@ data "aws_iam_policy_document" "task_role" {
 
     actions = ["ecs:DescribeClusters"]
 
-    resources = ["${aws_ecs_cluster.this.arn}"]
+    resources = ["${aws_ecs_cluster.ECS.arn}"]
   }
 }
 
 resource "aws_iam_role" "execution_role" {
   name               = "ecs-example-execution-role"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_by_ecs.json}"
+  assume_role_policy = data.aws_iam_policy_document.assume_by_ecs.json
 }
 
 resource "aws_iam_role_policy" "execution_role" {
-  role   = "${aws_iam_role.execution_role.name}"
-  policy = "${data.aws_iam_policy_document.execution_role.json}"
+  role   = aws_iam_role.execution_role.name
+  policy = data.aws_iam_policy_document.execution_role.json
 }
 
 resource "aws_iam_role" "task_role" {
   name               = "ecs-example-task-role"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_by_ecs.json}"
+  assume_role_policy = data.aws_iam_policy_document.assume_by_ecs.json
 }
 
 resource "aws_iam_role_policy" "task_role" {
-  role   = "${aws_iam_role.task_role.name}"
-  policy = "${data.aws_iam_policy_document.task_role.json}"
+  role   = aws_iam_role.task_role.name
+  policy = data.aws_iam_policy_document.task_role.json
 }
 
 resource "aws_ecs_task_definition" "this" {
   family                   = "green-blue-ecs-example"
-  container_definitions    = "${module.container_definition.json_map_encoded_list}"
-  execution_role_arn       = "${aws_iam_role.execution_role.arn}"
-  task_role_arn            = "${aws_iam_role.task_role.arn}"
+  container_definitions    = module.container_definition.json_map_encoded_list
+  execution_role_arn       = aws_iam_role.execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
   network_mode             = "awsvpc"
   cpu                      = "0.25 vcpu"
   memory                   = "0.5 gb"
   requires_compatibilities = ["FARGATE"]
 }
 
-resource "aws_security_group" "ecs" {
+resource "aws_security_group" "ECS" {
   name   = "allow-ecs-traffic"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -143,23 +143,23 @@ resource "aws_security_group" "ecs" {
   }
 }
 
-resource "aws_ecs_service" "this" {
-  name            = "example-service"
-  task_definition = "${aws_ecs_task_definition.this.id}"
-  cluster         = "${aws_ecs_cluster.this.arn}"
+resource "aws_ecs_service" "ECS" {
+  name            = local.project
+  task_definition = aws_ecs_task_definition.this.id
+  cluster         = aws_ecs_cluster.ECS.arn
 
   load_balancer {
-    target_group_arn = "${aws_lb_target_group.this.0.arn}"
-    container_name   = "${var.name}"
+    target_group_arn = var.target_group
+    container_name   = var.name
     container_port   = 80
   }
 
   launch_type   = "FARGATE"
-  desired_count = 3
+  desired_count = var.count
 
   network_configuration {
-    subnets         = ["${aws_subnet.this.*.id}"]
-    security_groups = ["${aws_security_group.ecs.id}"]
+    subnets         = ["${var.subnets}"]
+    security_groups = ["${aws_security_group.ECS.id}"]
 
     assign_public_ip = true
   }
@@ -167,6 +167,4 @@ resource "aws_ecs_service" "this" {
   deployment_controller {
     type = "CODE_DEPLOY"
   }
-
-  depends_on = [aws_lb_listener.this]
 }
