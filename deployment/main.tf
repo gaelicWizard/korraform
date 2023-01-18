@@ -48,8 +48,8 @@ module "codebuild" {
   codebuild_params       = local.codebuild_params
 }
 
-module "codestar_connection" {
-  source = "../modules/codestar_connection"
+module "KorraStar" {
+  source = "../modules/codestar"
 }
 
 module "s3" {
