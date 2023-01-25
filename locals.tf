@@ -12,6 +12,7 @@ locals {
     type    = "LINUX_CONTAINER"
     compute = "BUILD_GENERAL1_SMALL"
     cred    = "CODEBUILD"
+		priv_mode = true
   }
 
   environment_variables = {
