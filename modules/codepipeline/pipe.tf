@@ -1,8 +1,8 @@
 /*
  */
 resource "aws_codepipeline" "Korraline" {
-  for_each = local.containers
-  name     = "${var.project_name}/${each.key}"
+  for_each = var.containers
+  name     = "${var.project_name}.${each.key}"
   role_arn = aws_iam_role.Korraline.arn
 
   artifact_store {
@@ -43,7 +43,7 @@ resource "aws_codepipeline" "Korraline" {
       version          = "1"
 
       configuration = {
-        ProjectName = "${var.codebuild_project_name}"
+        ProjectName = "${var.codebuild_project}"
       }
     }
   }
@@ -75,7 +75,7 @@ resource "aws_codepipeline" "Korraline" {
         ActionMode    = "CHANGE_SET_REPLACE"
         StackName     = "${each.key}"
         ChangeSetName = "${each.key}-changes"
-        RoleArn       = aws_iam_role.codepipeline.arn
+        RoleArn       = aws_iam_role.Korraline.arn
         TemplatePath  = "build_output::outputtemplate.yml"
       }
     }

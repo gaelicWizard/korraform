@@ -8,7 +8,7 @@ variable "containers" {
 
 }
 
-variable "codebuild_project_name" {
+variable "codebuild_project" {
   description = "Identifier of the CodeBuild project to use"
   type        = string
 }
@@ -19,4 +19,9 @@ variable "namespace" {
 
 variable "codestar_connection" {
   description = "arn of KorraHub"
+}
+
+variable "region" {
+  description = "AWS region to run in"
+  type        = string
 }
