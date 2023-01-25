@@ -43,7 +43,7 @@ resource "aws_codepipeline" "Korraline" {
       version          = "1"
 
       configuration = {
-        ProjectName = "${var.codebuild_project}"
+        ProjectName = "${var.codebuild_name}"
       }
     }
   }
@@ -63,36 +63,18 @@ resource "aws_codepipeline" "Korraline" {
     name = "Deploy"
 
     action {
-      name            = "CreateChangeSet"
-      version         = "1"
+      name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "CloudFormation"
+      provider        = "CodeDeployToECS"
+      version         = "1"
       input_artifacts = ["build_output"]
-      run_order       = 1
 
-      configuration = {
-        ActionMode    = "CHANGE_SET_REPLACE"
-        StackName     = "${each.key}"
-        ChangeSetName = "${each.key}-changes"
-        RoleArn       = aws_iam_role.Korraline.arn
-        TemplatePath  = "build_output::outputtemplate.yml"
-      }
-    }
-
-    action {
-      name             = "DeployChangeSet"
-      version          = "1"
-      category         = "Deploy"
-      owner            = "AWS"
-      provider         = "CloudFormation"
-      output_artifacts = ["cf_artifacts"]
-      run_order        = 2
-
-      configuration = {
-        ActionMode    = "CHANGE_SET_EXECUTE"
-        StackName     = "${each.key}"
-        ChangeSetName = "${each.key}-changes"
+      configuration {
+        ApplicationName                = aws_codedeploy_app.Korraploy.name
+        DeploymentGroupName            = aws_codedeploy_deployment_group.Korraploy.deployment_group_name
+        TaskDefinitionTemplateArtifact = "build"
+        AppSpecTemplateArtifact        = "build"
       }
     }
   }

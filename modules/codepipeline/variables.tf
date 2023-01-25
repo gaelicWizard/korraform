@@ -8,8 +8,13 @@ variable "containers" {
 
 }
 
-variable "codebuild_project" {
+variable "codebuild_name" {
   description = "Identifier of the CodeBuild project to use"
+  type        = string
+}
+
+variable "codebuild_arn" {
+  description = "ARN of the CodeBuild project to use"
   type        = string
 }
 
