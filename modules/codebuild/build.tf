@@ -12,7 +12,7 @@ resource "aws_codebuild_project" "KorraBuild" {
       fetch_submodules = true
     }
     type      = "CODEPIPELINE"
-    buildspec = file("${path.module}/buildspec.yaml")
+    buildspec = data.template_file.buildspec.rendered
   }
 
   artifacts {
@@ -63,6 +63,14 @@ resource "aws_codebuild_project" "KorraBuild" {
     s3_logs {
       status = "DISABLED"
     }
+  }
+}
+
+data "template_file" "buildspec" {
+  template = "${path.module}/buildspec.yaml"
+  vars = {
+    REPOSITORY_URI = var.container_repo
+    IMAGE_NAME     = var.image_name
   }
 }
 

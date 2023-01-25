@@ -1,11 +1,17 @@
+/*
+ */
+variable "project_name" {
+  description = "Name for CodeBuild Project"
+  type        = string
+}
 
 variable "image_name" {
   description = "Name for image"
   type        = string
 }
 
-variable "project_name" {
-  description = "Name for CodeBuild Project"
+variable "container_repo" {
+  description = "URI of the container registry"
   type        = string
 }
 
@@ -20,6 +26,6 @@ variable "codebuild_params" {
 }
 
 variable "region" {
-	description = "AWS region to run in"
-	type = string
+  description = "AWS region to run in"
+  type        = string
 }
