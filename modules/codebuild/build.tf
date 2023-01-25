@@ -1,6 +1,19 @@
-resource "aws_codebuild_project" "CodeBuild_Project" {
-  name          = var.image_name
-  service_role = aws_iam_role.codebuildrole.arn
+/* AWS CodeBuild instance to build a Docker image.
+ * INPUT: whatever repository CodePipeline passes in.
+ * OUTPUT: upload image to ECR, then pass back to CodePipeline.
+ */
+resource "aws_codebuild_project" "KorraBuild" {
+  name         = var.project_name
+  service_role = aws_iam_role.KorraBuild.arn
+
+  source {
+    git_clone_depth = 1
+    git_submodules_config {
+      fetch_submodules = true
+    }
+    type      = "CODEPIPELINE"
+    buildspec = file("${path.module}/buildspec.yaml")
+  }
 
   artifacts {
     name                   = var.image_name
@@ -9,28 +22,27 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
     type                   = "CODEPIPELINE"
   }
 
-  source {
-    git_clone_depth = 1
-    type            = "CODEPIPELINE"
-		buildspec       = file("buildspec.yaml")
-  }
-
   environment {
     image                       = var.codebuild_params.image
     type                        = var.codebuild_params.type
     compute_type                = var.codebuild_params.compute
     image_pull_credentials_type = var.codebuild_params.cred
-    privileged_mode             = true
+    privileged_mode             = var.codebuild_params.priv_mode
 
     environment_variable {
       name  = "AWS_ACCOUNT_ID"
       value = data.aws_caller_identity.default.account_id
     }
-		
-		environment_variable {
-			name = "IMAGE_REPO_NAME"
-			value = "${var.project_name}/${var.image_name}"
-		}
+
+    environment_variable {
+      name  = "IMAGE_NAME"
+      value = var.image_name
+    }
+
+    environment_variable {
+      name  = "PROJECT_NAME"
+      value = var.project_name
+    }
 
     dynamic "environment_variable" {
       for_each = var.environment_variables
@@ -43,7 +55,7 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
 
   logs_config {
     cloudwatch_logs {
-      status      = "ENABLED"
+      status      = "ENABLED" # var.cloudwatch_params.status
       group_name  = "log-group"
       stream_name = "log-stream"
     }
@@ -52,10 +64,6 @@ resource "aws_codebuild_project" "CodeBuild_Project" {
       status = "DISABLED"
     }
   }
-}
-
-output "image_name" {
-  value = var.image_name
 }
 
 data "aws_caller_identity" "default" {}
