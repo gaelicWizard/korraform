@@ -1,3 +1,5 @@
-variable "ecr_name" {
+/*
+ */
+variable "project_name" {
   description = "Name for container repo"
 }
