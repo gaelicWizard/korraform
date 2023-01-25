@@ -1,11 +1,11 @@
 
 variable "image_name" {
-	description = "Name for image"
-	type = string
+  description = "Name for image"
+  type        = string
 }
 variable "project_name" {
   description = "Name for CodeBuild Project"
-	type = string
+  type        = string
 }
 
 variable "environment_variables" {
