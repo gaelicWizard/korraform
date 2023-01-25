@@ -1,5 +1,7 @@
-resource "aws_ecr_repository" "project_ecr_repo" {
+resource "aws_ecr_repository" "KorraRepo" {
   name = var.ecr_name
-  #  scan_on_push = true
+  image_scanning_configuration {
+    scan_on_push = true
+  }
   force_delete = true
 }
