@@ -28,7 +28,7 @@ variable "target_group" {
   type        = string
 }
 
-variable "project" {
+variable "project_name" {
   description = "Name to use for these resources"
   type        = string
 }
