@@ -1,11 +1,13 @@
 variable "name" {
   description = "Name of the container"
   type        = string
+  default     = "container"
 }
 
-variable "count" {
+variable "instances" {
   description = "Number of instaces to deploy *each*"
-  type        = int
+  type        = number
+  default     = 1
 }
 
 variable "region" {
@@ -18,10 +20,10 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "listener" {
+/*variable "listener" {
   description = "aws_lb_listener.?.id"
   type        = string
-}
+  }/**/
 
 variable "target_group" {
   description = "aws_lb_target_group.?.*.arn"
@@ -30,5 +32,10 @@ variable "target_group" {
 
 variable "project_name" {
   description = "Name to use for these resources"
+  type        = string
+}
+
+variable "repository_url" {
+  description = "URL of the container registry"
   type        = string
 }

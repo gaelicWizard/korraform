@@ -6,14 +6,17 @@ variable "deployment" {
     Example = {
       repo   = "gaelicWizard/korraform"
       branch = "main"
+      instances  = 1
     }
     Repo-3 = {
       repo   = "GitHub-Account-Name/Repo-3-Name"
       branch = "main"
+      instances  = 1
     }
     Repo-4 = {
       repo   = "GitHub-Account-Name/Repo-4-Name"
       branch = "main"
+      instances  = 1
     }
   }
 }

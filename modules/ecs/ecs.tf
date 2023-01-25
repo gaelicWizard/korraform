@@ -1,6 +1,6 @@
 # Elastic Container Service
 resource "aws_cloudwatch_log_group" "Korrapod" {
-  name = var.project
+  name = var.project_name
 }
 
 module "container_definition" {
@@ -21,13 +21,13 @@ module "container_definition" {
 
   log_configuration = {
     awslogs-region        = var.region
-    awslogs-group         = var.project
-    awslogs-stream-prefix = local.name
+    awslogs-group         = var.project_name
+    awslogs-stream-prefix = var.name
   }
 }
 
 resource "aws_ecs_cluster" "Korrapod" {
-  name = local.project
+  name = var.project_name
 }
 
 resource "aws_ecs_task_definition" "Korrapod" {
@@ -61,7 +61,7 @@ resource "aws_security_group" "Korrapod" {
 }
 
 resource "aws_ecs_service" "Korrapod" {
-  name            = local.project
+  name            = local.project_name
   task_definition = aws_ecs_task_definition.Korrapod.id
   cluster         = aws_ecs_cluster.Korrapod.arn
 
@@ -72,7 +72,7 @@ resource "aws_ecs_service" "Korrapod" {
   }
 
   launch_type   = "FARGATE"
-  desired_count = var.count
+  desired_count = var.instances
 
   network_configuration {
     subnets         = ["${var.subnets}"]
