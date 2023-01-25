@@ -1,12 +1,12 @@
 /*
  */
-resource "aws_codepipeline" "KorraPipe" {
+resource "aws_codepipeline" "Korraline" {
   for_each = local.containers
   name     = "${var.project_name}/${each.key}"
-  role_arn = aws_iam_role.KorraPipe.arn
+  role_arn = aws_iam_role.Korraline.arn
 
   artifact_store {
-    location = aws_s3_bucket.KorraPipe.id
+    location = aws_s3_bucket.Korraline.id
     type     = "S3"
   }
 

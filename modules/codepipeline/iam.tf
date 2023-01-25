@@ -1,9 +1,9 @@
-resource "aws_iam_role" "KorraPipe" {
+resource "aws_iam_role" "Korraline" {
   name               = "${var.project_name}Pipeline"
-  assume_role_policy = data.aws_iam_policy_document.KorraPipe.json
+  assume_role_policy = data.aws_iam_policy_document.Korraline.json
 }
 
-data "template_file" "KorraPipe" {
+data "template_file" "Korraline" {
   template = file("${path.module}/iam.json")
   vars = {
     ACCOUNT_ID         = data.aws_caller_identity.default.account_id
@@ -12,7 +12,7 @@ data "template_file" "KorraPipe" {
   }
 }
 
-data "aws_iam_policy_document" "KorraPipe" {
+data "aws_iam_policy_document" "Korraline" {
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -33,11 +33,11 @@ data "aws_iam_policy_document" "KorraPipe" {
 }
 
 
-resource "aws_iam_role_policy" "KorraPipe" {
+resource "aws_iam_role_policy" "Korraline" {
   name = "${var.project_name}Pipeline"
-  role = aws_iam_role.KorraPipe.id
+  role = aws_iam_role.Korraline.id
 
-  policy = data.template_file.KorraPipe.rendered
+  policy = data.template_file.Korraline.rendered
 }
 
 
