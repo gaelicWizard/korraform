@@ -1,4 +1,4 @@
 resource "aws_codestarconnections_connection" "KorraHub" {
-  name          = "GitHub"
+  name          = var.project_name
   provider_type = "GitHub"
 }
