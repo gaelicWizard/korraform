@@ -1,9 +1,12 @@
-resource "aws_codepipeline" "pipeline" {
-  name     = var.name_in
-  role_arn = aws_iam_role.codepipeline.arn
+/*
+ */
+resource "aws_codepipeline" "KorraPipe" {
+  for_each = local.containers
+  name     = "${var.project_name}/${each.key}"
+  role_arn = aws_iam_role.KorraPipe.arn
 
   artifact_store {
-    location = var.s3_bucket_name
+    location = aws_s3_bucket.KorraPipe.id
     type     = "S3"
   }
 
@@ -19,9 +22,9 @@ resource "aws_codepipeline" "pipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        ConnectionArn    = var.codestar_connection_arn
-        FullRepositoryId = "${var.repository_in}"
-        BranchName       = "${var.branch_in}"
+        ConnectionArn    = var.codestar_connection
+        FullRepositoryId = "${each.value.repo}"
+        BranchName       = "${each.value.branch}"
       }
     }
   }
@@ -70,8 +73,8 @@ resource "aws_codepipeline" "pipeline" {
 
       configuration = {
         ActionMode    = "CHANGE_SET_REPLACE"
-        StackName     = "${var.name_in}"
-        ChangeSetName = "${var.name_in}-changes"
+        StackName     = "${each.key}"
+        ChangeSetName = "${each.key}-changes"
         RoleArn       = aws_iam_role.codepipeline.arn
         TemplatePath  = "build_output::outputtemplate.yml"
       }
@@ -88,8 +91,8 @@ resource "aws_codepipeline" "pipeline" {
 
       configuration = {
         ActionMode    = "CHANGE_SET_EXECUTE"
-        StackName     = "${var.name_in}"
-        ChangeSetName = "${var.name_in}-changes"
+        StackName     = "${each.key}"
+        ChangeSetName = "${each.key}-changes"
       }
     }
   }

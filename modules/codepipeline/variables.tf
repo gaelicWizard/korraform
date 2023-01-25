@@ -1,6 +1,7 @@
 # Repo details
 
-variable "repository_in" {
+variable "project_name" {
+  type = string
 }
 
 variable "branch_in" {
@@ -12,6 +13,8 @@ variable "name_in" {
 # Deployment details
 
 variable "codebuild_project_name" {
+  description = "Identifier of the CodeBuild project to use"
+  type        = string
 }
 
 variable "namespace" {
@@ -23,5 +26,6 @@ variable "namespace" {
 variable "s3_bucket_name" {
 }
 
-variable "codestar_connection_arn" {
+variable "codestar_connection" {
+  description = "arn of KorraHub"
 }
