@@ -7,6 +7,8 @@ data "template_file" "KorraBuild" {
     ACCOUNT_ID         = data.aws_caller_identity.default.account_id
     CODEBUILD_NAME     = var.project_name
     AWS_DEFAULT_REGION = var.region
+    S3_BUCKET          = var.bucket
+    ECR_ARN            = var.ecr_arn
   }
 }
 
@@ -22,16 +24,13 @@ data "aws_iam_policy_document" "KorraBuild" {
 }
 
 resource "aws_iam_role" "KorraBuild" {
-  assume_role_policy    = data.aws_iam_policy_document.KorraBuild.json
-  description           = "Allows CodeBuild to call AWS services on your behalf."
-  force_detach_policies = false
-  managed_policy_arns = [
+  name               = "${var.project_name}Build"
+  assume_role_policy = data.aws_iam_policy_document.KorraBuild.json
+  description        = "Allows CodeBuild to call AWS services on your behalf."
+  /*managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  ]
-  max_session_duration = 3600
-  name                 = "${var.project_name}Build"
-
+  ]/**/
 }
 
 resource "aws_iam_role_policy" "KorraBuild" {

@@ -29,3 +29,10 @@ variable "region" {
   description = "AWS region to run in"
   type        = string
 }
+
+variable "ecr_arn" {
+  description = "ARN of the ECR"
+  type        = string
+}
+
+variable "bucket" {}
