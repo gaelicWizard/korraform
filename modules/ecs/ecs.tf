@@ -6,10 +6,10 @@ resource "aws_cloudwatch_log_group" "Korrapod" {
 module "container_definition" {
   source = "cloudposse/ecs-container-definition/aws"
   #  version = "0.13.0"
-  #for_each var.deployment
+  for_each var.containers
 
-  container_name  = var.name
-  container_image = "${var.repository_url}:latest"
+  container_name  = each.key
+  container_image = "${var.repository_url}/${each.key}:latest"
 
   port_mappings = [
     {
@@ -22,7 +22,7 @@ module "container_definition" {
   log_configuration = {
     awslogs-region        = var.region
     awslogs-group         = var.project_name
-    awslogs-stream-prefix = var.name
+    awslogs-stream-prefix = each.key
   }
 }
 

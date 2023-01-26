@@ -1,7 +1,8 @@
-variable "name" {
-  description = "Name of the container"
-  type        = string
-  default     = "container"
+/*
+ */
+variable "containers" {
+    description = "List of containers to run"
+    type        = map(map(string))
 }
 
 variable "instances" {
