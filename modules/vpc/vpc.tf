@@ -1,7 +1,7 @@
 # VPC with subnets and gateway
 
 resource "aws_vpc" "Korra" {
-  cidr_block = element(values(var.subnets), 0)
+  cidr_block = "${var.network_prefix}${var.network_suffix}"
 
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -19,17 +19,13 @@ resource "aws_internet_gateway" "Appa" {
   }
 }
 
-resource "aws_subnet" "nation" {
-  count      = length(var.subnets)
-  cidr_block = element(values(var.subnets), count.index)
+resource "aws_subnet" "nations" {
   vpc_id     = aws_vpc.Korra.id
+  count      = length(data.aws_availability_zones.Zonai.names)
+  cidr_block = "${var.network_prefix}.${16 * count.index}${var.subnet_dot_zero}/${var.subnet_mask}"
 
-  map_public_ip_on_launch = true
-  availability_zone       = element(keys(var.subnets), count.index)
-
-  tags = {
-    Name = "${element(keys(var.subnets), count.index)}"
-  }
+  map_public_ip_on_launch = false
+  availability_zone       = data.aws_availability_zones.Zonai.names[count.index]
 }
 
 resource "aws_route_table" "nation" {
@@ -47,7 +43,15 @@ resource "aws_route" "seasons" {
 }
 
 resource "aws_route_table_association" "element" {
-  count          = length(var.subnets)
+  count          = length(aws_subnet.nations)
   route_table_id = aws_route_table.nation.id
-  subnet_id      = element(aws_subnet.nation.*.id, count.index)
+  subnet_id      = element(aws_subnet.nations.*.id, count.index)
+}
+
+data "aws_availability_zones" "Zonai" {
+  state = "available"
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }

@@ -5,6 +5,7 @@ locals {
 
   containers     = var.deployment
   network_prefix = "10.XXX"
+  network_mask   = "24"
   subnet_mask    = "28" # 16 subnets of 16 hosts
 
   codebuild_params = {
@@ -21,4 +22,5 @@ locals {
     "IMAGE_TAG"          = "latest" # ¿git commit hash?
   }
 
+  subnets = module.vpc.subnets
 }
