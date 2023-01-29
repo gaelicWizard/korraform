@@ -35,4 +35,9 @@ variable "ecr_arn" {
   type        = string
 }
 
+variable "ecs_arn" {
+  description = "ARN of the ECR"
+  type        = string
+}
+
 variable "bucket" {}

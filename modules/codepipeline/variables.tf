@@ -13,6 +13,16 @@ variable "codebuild_arn" {
   type        = string
 }
 
+variable "codebuild_name" {
+  description = "ARN of the CodeBuild project to use"
+  type        = string
+}
+
+variable "codedeploy_arn" {
+  description = "ARN of the CodeDeploy deployment group"
+  type        = string
+}
+
 variable "codedeploy_app" {
   description = "Name of the CodeDeploy app"
   type        = string

@@ -25,6 +25,7 @@ data "template_file" "KorraBuild" {
     AWS_DEFAULT_REGION = var.region
     S3_BUCKET          = var.bucket
     ECR_ARN            = var.ecr_arn
+    ECS_ARN            = var.ecs_arn
   }
 }
 

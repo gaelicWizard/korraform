@@ -3,7 +3,7 @@
  * https://docs.aws.amazon.com/AmazonECS/latest/developerguide/codedeploy_IAM_role.html
  */
 resource "aws_iam_role" "Korraploy" {
-  name               = "${var.projectname}ploy"
+  name               = "${var.project_name}ploy"
   assume_role_policy = data.aws_iam_policy_document.AssumeKorraploy.json
   /*managed_policy_arns = [
       "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
@@ -59,8 +59,8 @@ data "aws_iam_policy_document" "Korraploy" {
     actions = ["iam:PassRole"]
 
     resources = [
-      "${aws_iam_role.execution_role.arn}",
-      "${aws_iam_role.task_role.arn}",
+      "${var.execution_role_arn}",
+      "${var.task_role_arn}",
     ]
   }
 }

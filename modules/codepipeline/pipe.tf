@@ -1,7 +1,7 @@
-/* AWS CodePipeline
- * Get source from CodeStar Connection,
- * Build with CodeBuild,
- * Deploy through CodeDeploy.
+/* AWS CodePipeline:
+ * - Get source from CodeStar Connection,
+ * - Build with CodeBuild,
+ * - Deploy through CodeDeploy.
  */
 resource "aws_codepipeline" "Korraline" {
   for_each = var.containers
