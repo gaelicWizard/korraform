@@ -1,4 +1,6 @@
-# Elastic Load Balancer
+/* Elastic Load Balancer
+ * - Allow access to containers from the internet, over HTTPS
+ */
 resource "aws_security_group" "LoadBalancer" {
   name   = "allow-${local.project}"
   vpc_id = local.vpc_id

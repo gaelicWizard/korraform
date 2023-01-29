@@ -1,4 +1,6 @@
-# Elastic Container Service
+/* Elastic Container Service
+ * - Run containers provided from CodeDeploy using the standard task definition.
+ */
 resource "aws_cloudwatch_log_group" "Korrapod" {
   name = var.project_name
 }
@@ -6,7 +8,7 @@ resource "aws_cloudwatch_log_group" "Korrapod" {
 module "container_definition" {
   source = "cloudposse/ecs-container-definition/aws"
   #  version = "0.13.0"
-  for_each var.containers
+  for_each = var.containers
 
   container_name  = each.key
   container_image = "${var.repository_url}/${each.key}:latest"
