@@ -63,13 +63,13 @@ resource "aws_security_group" "Korrapod" {
 }
 
 resource "aws_ecs_service" "Korrapod" {
-  name            = local.project_name
+  name            = var.project_name
   task_definition = aws_ecs_task_definition.Korrapod.id
   cluster         = aws_ecs_cluster.Korrapod.arn
 
   load_balancer {
     target_group_arn = var.target_group
-    container_name   = var.name
+    container_name   = var.containers[0].key #module.container_definition[0].container_name
     container_port   = 80
   }
 
