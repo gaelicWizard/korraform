@@ -1,5 +1,5 @@
 output "groups" {
-  value = aws_lb_target_group.LoadBalancer.arn
+  value = aws_lb_target_group.LoadBalancer.*.arn
 }
 
 output "listener" {

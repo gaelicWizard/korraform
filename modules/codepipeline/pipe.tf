@@ -73,7 +73,7 @@ resource "aws_codepipeline" "Korraline" {
       version         = "1"
       input_artifacts = ["build_output"]
 
-      configuration {
+      configuration = {
         ApplicationName                = aws_codedeploy_app.Korraploy.name
         DeploymentGroupName            = aws_codedeploy_deployment_group.Korraploy.deployment_group_name
         TaskDefinitionTemplateArtifact = "build"

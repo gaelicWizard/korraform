@@ -34,7 +34,7 @@ resource "aws_ecs_cluster" "Korrapod" {
 
 resource "aws_ecs_task_definition" "Korrapod" {
   family                   = var.project_name
-  container_definitions    = module.container_definition.json_map_encoded_list
+  container_definitions    = jsonencode([module.container_definition.json_map_encoded_list])
   execution_role_arn       = aws_iam_role.Korrapod.arn
   task_role_arn            = aws_iam_role.KorraTask.arn
   network_mode             = "awsvpc"

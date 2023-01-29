@@ -1,8 +1,12 @@
 /*
  */
 variable "containers" {
-    description = "List of containers to run"
-    type        = map(map(string))
+  description = "List of containers to run"
+  type        = map(map(string))
+}
+
+variable "subnets" {
+  description = "Subnets to deploy to"
 }
 
 variable "instances" {

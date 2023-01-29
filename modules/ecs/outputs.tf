@@ -1,3 +1,3 @@
 output "tasks" {
-  value = module.container_definition.json_map_encoded_list
+  value = jsonencode([module.container_definition.json_map_encoded_list])
 }

@@ -19,7 +19,7 @@ resource "aws_security_group" "LoadBalancer" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "allow-https-sg"
   }
 }
@@ -29,9 +29,9 @@ resource "aws_lb" "LoadBalancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = ["${aws_security_group.LoadBalancer.id}"]
-  subnets            = ["${local.subnet_ids}"]
+  subnets            = [var.subnets.*.id]
 
-  tags {
+  tags = {
     Name = "example"
   }
 }
@@ -72,7 +72,8 @@ resource "aws_lb_listener_rule" "LoadBalancer" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/*"]
+    path_pattern {
+      values = ["/*"]
+    }
   }
 }
