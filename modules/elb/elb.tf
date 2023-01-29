@@ -29,7 +29,7 @@ resource "aws_lb" "LoadBalancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = ["${aws_security_group.LoadBalancer.id}"]
-  subnets            = [var.subnets.*.id]
+  subnets            = [var.subnets.*]
 
   tags = {
     Name = "example"

@@ -3,5 +3,5 @@ output "vpc_id" {
 }
 
 output "subnets" {
-  value = aws_subnet.nations
+  value = aws_subnet.nations.*.id
 }
