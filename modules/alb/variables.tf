@@ -3,6 +3,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "certificate" {
+  description = "ARN of the TLS certificate"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "VPC to target"
   type        = string
