@@ -1,4 +1,16 @@
-data "aws_iam_policy_document" "Korraploy" {
+/* IAM role for CodeDeploy
+ * 
+ * https://docs.aws.amazon.com/AmazonECS/latest/developerguide/codedeploy_IAM_role.html
+ */
+resource "aws_iam_role" "Korraploy" {
+  name               = "${var.projectname}ploy"
+  assume_role_policy = data.aws_iam_policy_document.AssumeKorraploy.json
+  /*managed_policy_arns = [
+      "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+      ]/**/
+}
+
+data "aws_iam_policy_document" "AssumeKorraploy" {
   statement {
     sid     = ""
     effect  = "Allow"
@@ -11,12 +23,7 @@ data "aws_iam_policy_document" "Korraploy" {
   }
 }
 
-resource "aws_iam_role" "Korraploy" {
-  name               = "${var.projectname}ploy"
-  assume_role_policy = data.aws_iam_policy_document.Korraploy.json
-}
-
-data "aws_iam_policy_document" "Korraploy2" {
+data "aws_iam_policy_document" "Korraploy" {
   statement {
     sid    = "AllowLoadBalancingAndECSModifications"
     effect = "Allow"
@@ -60,5 +67,5 @@ data "aws_iam_policy_document" "Korraploy2" {
 
 resource "aws_iam_role_policy" "Korraploy" {
   role   = aws_iam_role.Korraploy.name
-  policy = data.aws_iam_policy_document.Korraploy2.json
+  policy = data.aws_iam_policy_document.Korraploy.json
 }
