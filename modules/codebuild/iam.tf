@@ -1,5 +1,21 @@
-/* Create the role for CodeBuild to access the source code and store the build result.
+/* IAM role for CodeBuild to:
+ * - access source from CodePipeline,
+ * - push image to ECR,
+ * - return to CodePipeline.
+ *
+ * https://aws.amazon.com/blogs/devops/complete-ci-cd-with-aws-codecommit-aws-codebuild-aws-codedeploy-and-aws-codepipeline/
+ * https://github.com/aws-samples/cicd-with-aws-code-suite/tree/master/policies
  */
+
+resource "aws_iam_role" "KorraBuild" {
+  name               = "${var.project_name}Build"
+  assume_role_policy = data.aws_iam_policy_document.KorraBuild.json
+  description        = "Allows CodeBuild to call AWS services on your behalf."
+  /*managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  ]/**/
+}
 
 data "template_file" "KorraBuild" {
   template = file("${path.module}/iam.json")
@@ -21,16 +37,6 @@ data "aws_iam_policy_document" "KorraBuild" {
       identifiers = ["codebuild.amazonaws.com"]
     }
   }
-}
-
-resource "aws_iam_role" "KorraBuild" {
-  name               = "${var.project_name}Build"
-  assume_role_policy = data.aws_iam_policy_document.KorraBuild.json
-  description        = "Allows CodeBuild to call AWS services on your behalf."
-  /*managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  ]/**/
 }
 
 resource "aws_iam_role_policy" "KorraBuild" {

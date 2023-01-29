@@ -45,7 +45,7 @@
 						"ecr:GetAuthorizationToken"
 					],
 					"Resource": [
-						"*"
+						"${ECR_ARN}"
 					]
 				},
 				{
@@ -67,7 +67,7 @@
 						"ecs:DescribeTaskDefinition"
 					],
 					"Resource": [
-						"*"
+						"${ECS_ARN}"
 					]
 				}
     ]
