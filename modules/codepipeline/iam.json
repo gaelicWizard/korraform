@@ -1,39 +1,82 @@
 {
-    "Statement": [
-        {
-            "Action": [
-                "s3:GetObject",
-                "s3:GetObjectVersion",
-                "s3:GetBucketVersioning"
-            ],
-            "Resource": [
-							"${S3_BUCKET}",
-							"${S3_BUCKET}/*"
-						],
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-							"${S3_BUCKET}",
-							"${S3_BUCKET}/*"
-						],
-            "Effect": "Allow"
-        },
-				{
-					"Effect": "Allow",
-					"Action": [
-						"codebuild:BatchGetBuilds",
-						"codebuild:StartBuild"
-					],
-					"Resource": [
-						"${CODEBUILD_ARN}"
-					]
-				}
-    ],
-    "Version": "2012-10-17"
+   "Statement" : [
+      {
+         "Action" : [
+            "codestar-connections:UseConnection"
+         ],
+         "Effect" : "Allow",
+         "Resource" : "${CODESTAR_ARN}",
+         "SID" : "AllowCodeStarSourceConnection"
+      },
+      {
+         "Action" : [
+            "s3:PutObject",
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:GetBucketVersioning",
+            "s3:DeleteObject"
+         ],
+         "Effect" : "Allow",
+         "Resource" : [
+            "${S3_BUCKET}",
+            "${S3_BUCKET}/*"
+         ],
+         "SID" : "AllowS3"
+      },
+      {
+         "Action" : [
+            "codebuild:BatchGetBuilds",
+            "codebuild:StartBuild"
+         ],
+         "Effect" : "Allow",
+         "Resource" : [
+            "${CODEBUILD_ARN}"
+         ],
+         "SID" : "AllowCodeBuild"
+      },
+      {
+         "Action" : [
+            "ecr:DescribeImages"
+         ],
+         "Effect" : "Allow",
+         "Resource" : [
+            "${ECR_ARN}"
+         ],
+         "SID" : "AllowECR"
+      },
+      {
+         "Action" : [
+            "codedeploy:CreateDeployment",
+            "codedeploy:GetDeployment",
+            "codedeploy:GetApplication",
+            "codedeploy:GetApplicationRevision",
+            "codedeploy:RegisterApplicationRevision",
+            "codedeploy:GetDeploymentConfig",
+            "ecs:RegisterTaskDefinition"
+         ],
+         "Effect" : "Allow",
+         "Resource" : [
+            "${CODEDEPLOY_ARN}"
+         ],
+         "SID" : "AllowCodeDeployToECS"
+      },
+      {
+         "Action" : [
+            "iam:PassRole"
+         ],
+         "Condition" : {
+            "StringEqualsIfExists" : {
+               "iam:PassedToService" : [
+                  "ecs-tasks.amazonaws.com"
+               ]
+            }
+         },
+         "Effect" : "Allow",
+         "SID" : "AllowPassRole",
+         "resources" : [
+            "*"
+         ]
+      }
+   ],
+   "Version" : "2012-10-17"
 }
