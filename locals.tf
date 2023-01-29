@@ -4,7 +4,7 @@ locals {
   region       = var.aws_region
 
   containers     = var.deployment
-  network_prefix = "10.XXX"
+  network_prefix = "10.172.9"
   network_mask   = "24"
   subnet_mask    = "28" # 16 subnets of 16 hosts
 
