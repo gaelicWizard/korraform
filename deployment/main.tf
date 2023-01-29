@@ -9,7 +9,7 @@ terraform {
 
 module "vpc" {
   source  = "../modules/vpc"
-  name    = "${local.project_name}-${terraform.workspace}"
+  name    = local.project_name
   subnets = local.subnets
   region  = local.location
 }
