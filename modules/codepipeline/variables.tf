@@ -8,13 +8,18 @@ variable "containers" {
 
 }
 
-variable "codebuild_name" {
-  description = "Identifier of the CodeBuild project to use"
+variable "codebuild_arn" {
+  description = "ARN of the CodeBuild project to use"
   type        = string
 }
 
-variable "codebuild_arn" {
-  description = "ARN of the CodeBuild project to use"
+variable "codedeploy_app" {
+  description = "Name of the CodeDeploy app"
+  type        = string
+}
+
+variable "codedeploy_group" {
+  description = "ARN of the CodeDeploy deployment group"
   type        = string
 }
 
@@ -23,7 +28,7 @@ variable "namespace" {
 }
 
 variable "codestar_connection" {
-  description = "arn of KorraHub"
+  description = "ARN of KorraHub"
 }
 
 variable "region" {
