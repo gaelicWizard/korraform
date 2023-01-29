@@ -71,6 +71,18 @@ resource "aws_lb_listener" "LoadBalancer" {
   }
 }
 
+resource "aws_route53_record" "LoadBalancer" {
+  zone_id = data.aws_route53_zone.dns.zone_id
+  name    = var.record_name
+  type    = "A"
+
+  alias {
+    name                   = var.alias_name
+    zone_id                = var.alias_zone_id
+    evaluate_target_health = true
+  }
+}
+
 resource "aws_lb_listener_rule" "LoadBalancer" {
   listener_arn = aws_lb_listener.LoadBalancer.arn
 
