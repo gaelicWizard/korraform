@@ -7,6 +7,7 @@ variable "containers" {
 
 variable "subnets" {
   description = "Subnets to deploy to"
+  type        = list(any)
 }
 
 variable "instances" {
@@ -30,9 +31,13 @@ variable "vpc_id" {
   type        = string
   }/**/
 
-variable "target_group" {
+variable "target_groups" {
   description = "aws_lb_target_group.?.*.arn"
-  type        = string
+  type        = list(string)
+}
+
+variable "listener" {
+  description = "ARN of the LoadBalancer Listener"
 }
 
 variable "project_name" {

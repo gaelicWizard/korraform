@@ -8,14 +8,17 @@ resource "aws_cloudwatch_log_group" "Korrapod" {
 module "container_definition" {
   source = "cloudposse/ecs-container-definition/aws"
   #  version = "0.13.0"
-  for_each = var.containers
+  /*  for_each = var.containers
 
   container_name  = each.key
   container_image = "${var.repository_url}/${each.key}:latest"
+/**/
+  container_name  = "Example"
+  container_image = "${var.repository_url}/Example:latest"
 
   port_mappings = [
     {
-      containerPort = 8
+      containerPort = 80
       hostPort      = 80
       protocol      = "tcp"
     }
@@ -34,12 +37,12 @@ resource "aws_ecs_cluster" "Korrapod" {
 
 resource "aws_ecs_task_definition" "Korrapod" {
   family                   = var.project_name
-  container_definitions    = jsonencode([module.container_definition.*.json_map_encoded_list])
+  container_definitions    = jsonencode([module.container_definition.json_map_object])
   execution_role_arn       = aws_iam_role.Korrapod.arn
   task_role_arn            = aws_iam_role.KorraTask.arn
   network_mode             = "awsvpc"
-  cpu                      = "0.25 vcpu"
-  memory                   = "0.5 gb"
+  cpu                      = "256"
+  memory                   = "512"
   requires_compatibilities = ["FARGATE"]
 }
 
@@ -68,8 +71,8 @@ resource "aws_ecs_service" "Korrapod" {
   cluster         = aws_ecs_cluster.Korrapod.arn
 
   load_balancer {
-    target_group_arn = var.target_group
-    container_name   = var.containers[0].key #module.container_definition[0].container_name
+    target_group_arn = var.target_groups[0]
+    container_name   = "Example" #var.containers[0].key #module.container_definition[0].container_name
     container_port   = 80
   }
 
@@ -77,7 +80,7 @@ resource "aws_ecs_service" "Korrapod" {
   desired_count = var.instances
 
   network_configuration {
-    subnets         = ["${var.subnets}"]
+    subnets         = var.subnets
     security_groups = ["${aws_security_group.Korrapod.id}"]
 
     assign_public_ip = true
@@ -86,6 +89,15 @@ resource "aws_ecs_service" "Korrapod" {
   deployment_controller {
     type = "CODE_DEPLOY"
   }
-  /*To prevent a race condition during service deletion, make sure to set depends_on to the related aws_iam_role_policy; otherwise, the policy may be destroyed too soon and the ECS service will then get stuck in the DRAINING state.*/
 
+  lifecycle {
+    # ignore any changes to that count caused externally (e.g., Application Autoscaling).
+    ignore_changes = [desired_count]
+  }
+
+  /* To prevent a race condition during service deletion, make sure to set depends_on to the related aws_iam_role_policy; otherwise, the policy may be destroyed too soon and the ECS service will then get stuck in the DRAINING state.*/
+  depends_on = [
+    aws_iam_role.Korrapod,
+    var.listener
+  ]
 }

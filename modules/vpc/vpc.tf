@@ -26,6 +26,7 @@ resource "aws_subnet" "nations" {
 
   map_public_ip_on_launch = false
   availability_zone       = data.aws_availability_zones.Zonai.names[count.index]
+  /*name                    = data.aws_availability_zones.Zonai.names[count.index]/**/
 }
 
 resource "aws_route_table" "nation" {

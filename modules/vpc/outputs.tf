@@ -3,5 +3,9 @@ output "vpc_id" {
 }
 
 output "subnets" {
-  value = aws_subnet.nations.*.id
+  value = aws_subnet.nations[*].cidr_block
+}
+
+output "subnet_ids" {
+  value = aws_subnet.nations[*].id
 }

@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "KorraTask" {
 resource "aws_iam_role" "Korrapod" {
   name                = "${var.project_name}pod"
   assume_role_policy  = data.aws_iam_policy_document.Korrapod.json
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonECSTaskExecutionRolePolicy"]
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"] #["arn:aws:iam::aws:policy/AmazonECSTaskExecutionRolePolicy"]
 }
 
 resource "aws_iam_role" "KorraTask" {

@@ -9,5 +9,5 @@ variable "vpc_id" {
 }
 
 variable "subnets" {
-  description = "Subnets to use"
+  description = "ARNs of subnets to use"
 }

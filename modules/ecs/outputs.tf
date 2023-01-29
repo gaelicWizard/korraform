@@ -1,5 +1,5 @@
 output "tasks" {
-  value = jsonencode([module.container_definition.json_map_encoded_list])
+  value = jsonencode([module.container_definition.json_map_object])
 }
 
 output "execution_role" {
