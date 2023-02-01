@@ -8,19 +8,19 @@ phases:
     commands:
       - echo "Logging in to Amazon ECR ($AWS_DEFAULT_REGION)..."
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "${REPOSITORY_URI}"
-			- IMAGE_TAG="${CODEBUILD_SOURCE_VERSION:-latest}"
-			- echo '.git' >> .dockerignore
-			- codebuild-breakpoint
+      - IMAGE_TAG="${CODEBUILD_SOURCE_VERSION:-latest}"
+      - echo '.git' >> .dockerignore
+      - codebuild-breakpoint
   build:
     commands:
       - echo Build started on `date`
-			- codebuild-breakpoint
+      - codebuild-breakpoint
       - echo Building the Docker image...  
       - docker build -t "${REPOSITORY_URI}/${IMAGE_NAME}":latest -t "${REPOSITORY_URI}/${IMAGE_NAME}":"$IMAGE_TAG" .
   post_build:
     commands:
       - echo Build completed on `date`
-			- codebuild-breakpoint
+      - codebuild-breakpoint
       - echo Pushing the Docker image...
       - docker push --all-tags "${REPOSITORY_URI}/${IMAGE_NAME}"
 
