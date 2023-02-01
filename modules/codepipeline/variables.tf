@@ -8,6 +8,10 @@ variable "containers" {
 
 }
 
+variable "ecr" {
+  type = string
+}
+
 variable "codebuild_arn" {
   description = "ARN of the CodeBuild project to use"
   type        = string
