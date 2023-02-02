@@ -17,7 +17,7 @@ resource "aws_codepipeline" "Korraline" {
     name = "Source"
 
     action {
-      name             = "Source"
+      name             = "Code"
       category         = "Source"
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
@@ -32,7 +32,7 @@ resource "aws_codepipeline" "Korraline" {
     }
 
     action {
-      name             = "Image"
+      name             = "Repository"
       category         = "Source"
       owner            = "AWS"
       provider         = "ECR"
@@ -50,12 +50,12 @@ resource "aws_codepipeline" "Korraline" {
 
 
     action {
-      name             = "Build"
+      name             = "Builder"
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
       input_artifacts  = ["source_repo"]
-      output_artifacts = ["image_built"]
+      output_artifacts = ["built_image"]
       version          = "1"
 
       configuration = {
@@ -74,7 +74,7 @@ resource "aws_codepipeline" "Korraline" {
   stage {
     name = "Manual_Approval"
     action {
-      name     = "Manual-Approval"
+      name     = "Blame"
       category = "Approval"
       owner    = "AWS"
       provider = "Manual"
@@ -86,7 +86,7 @@ resource "aws_codepipeline" "Korraline" {
     name = "Deploy"
 
     action {
-      name     = "Deploy"
+      name     = "YOLO"
       category = "Deploy"
       owner    = "AWS"
       provider = "CodeDeployToECS"
@@ -94,7 +94,7 @@ resource "aws_codepipeline" "Korraline" {
       input_artifacts = [
         "source_repo",
         "image_repo",
-        "image_built"
+        "built_image"
       ]
 
       configuration = {
@@ -103,10 +103,10 @@ resource "aws_codepipeline" "Korraline" {
 
         AppSpecTemplateArtifact        = "image_repo"
         AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
-        TaskDefinitionTemplateArtifact = "image_built"
+        TaskDefinitionTemplateArtifact = "built_image"
         TaskDefinitionTemplatePath     = "taskdef.json"
 
-        Image1ArtifactName = "image_built"
+        Image1ArtifactName  = "built_image"
         Image1ContainerName = "example"
       }
     }
