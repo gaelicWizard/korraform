@@ -40,7 +40,7 @@ resource "aws_codedeploy_deployment_group" "Korraploy" {
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
-        listener_arns = ["${var.listener_arn}]"]
+        listener_arns = ["${var.listener_arn}"]
       }
 
       target_group {
