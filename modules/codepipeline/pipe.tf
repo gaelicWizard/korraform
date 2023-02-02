@@ -30,6 +30,19 @@ resource "aws_codepipeline" "Korraline" {
         BranchName       = "${each.value.branch}"
       }
     }
+
+    action {
+      name             = "Repository"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "ECR"
+      version          = "1"
+      output_artifacts = ["ecr_info"]
+      configuration = {
+        RepositoryName = var.ecr
+        ImageTag       = "latest"
+      }
+    }
   }
 
   stage {
@@ -78,7 +91,7 @@ resource "aws_codepipeline" "Korraline" {
       owner           = "AWS"
       provider        = "CodeDeployToECS"
       version         = "1"
-      input_artifacts = ["build_output"]
+      input_artifacts = ["ecr_info"]
 
       configuration = {
         ApplicationName                = var.codedeploy_app
