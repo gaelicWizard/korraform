@@ -103,10 +103,10 @@ resource "aws_codepipeline" "Korraline" {
 
         AppSpecTemplateArtifact        = "image_repo"
         AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
-        TaskDefinitionTemplateArtifact = "image_repo"
-        TaskDefinitionTemplatePath     = "modules/ecs/taskdef.json"
+        TaskDefinitionTemplateArtifact = "image_built"
+        TaskDefinitionTemplatePath     = "taskdef.json"
 
-        #Image1ArtifactName = ""
+        #Image1ArtifactName = "image_built"
         #Image1ContainerName = ""
       }
     }
