@@ -70,7 +70,7 @@ resource "aws_codebuild_project" "KorraBuild" {
 data "template_file" "buildspec" {
   template = file("${path.module}/buildspec.yaml")
   vars = {
-    REPOSITORY_URI = "https://${var.container_repo}"
+    REPOSITORY_URI = "${var.container_repo}"
     # CODEBUILD_RESOLVED_SOURCE_VERSION
   }
 }
