@@ -1,6 +1,6 @@
 /* CodeStar Connection from GitHub.
  */
-resource "aws_codestarconnections_connection" "KorraHub" {
+resource "aws_codestarconnections_connection" "KorraStar" {
   name          = var.project_name
-  provider_type = "GitHub"
+  provider_type = var.connection_type
 }
