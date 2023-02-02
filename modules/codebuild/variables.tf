@@ -10,6 +10,11 @@ variable "image_name" {
   type        = string
 }
 
+variable "task_definition" {
+  description = "Contents of the task definition"
+  type        = string
+}
+
 variable "container_repo" {
   description = "URI of the container registry"
   type        = string

@@ -35,13 +35,14 @@ resource "aws_codebuild_project" "KorraBuild" {
     }
 
     environment_variable {
-      name  = "IMAGE_NAME"
-      value = var.image_name
+      name  = "PROJECT_NAME"
+      value = var.project_name
     }
 
     environment_variable {
-      name  = "PROJECT_NAME"
-      value = var.project_name
+      name  = "TASK_DEFINITION"
+      value = var.task_definition
+      # "arn:aws:ecs:${var.region}:${var.account_id}:task-definition/${aws_ecs_task_definition.this.family}"
     }
 
     dynamic "environment_variable" {
