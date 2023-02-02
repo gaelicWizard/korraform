@@ -71,7 +71,6 @@ data "template_file" "buildspec" {
   template = file("${path.module}/buildspec.yaml")
   vars = {
     REPOSITORY_URI = "https://${var.container_repo}"
-    IMAGE_NAME     = var.image_name
     # CODEBUILD_RESOLVED_SOURCE_VERSION
   }
 }
