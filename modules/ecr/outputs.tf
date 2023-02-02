@@ -5,3 +5,7 @@ output "url" {
 output "arn" {
   value = aws_ecr_repository.KorraRepo.arn
 }
+
+output "name" {
+  value = aws_ecr_repository.KorraRepo.name
+}

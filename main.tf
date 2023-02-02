@@ -53,7 +53,8 @@ module "Korraline" {
   codestar_connection = module.KorraStar.codestar_arn
   containers          = var.deployment
   region              = local.region
-  ecr                 = module.KorraRepo.arn
+  ecr_arn             = module.KorraRepo.arn
+  ecr_name            = module.KorraRepo.name
 } /**/
 
 module "Korraploy" {

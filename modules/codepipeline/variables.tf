@@ -8,7 +8,11 @@ variable "containers" {
 
 }
 
-variable "ecr" {
+variable "ecr_arn" {
+  type = string
+}
+
+variable "ecr_name" {
   type = string
 }
 

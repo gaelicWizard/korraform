@@ -39,7 +39,7 @@ resource "aws_codepipeline" "Korraline" {
       version          = "1"
       output_artifacts = ["ecr_info"]
       configuration = {
-        RepositoryName = var.ecr
+        RepositoryName = var.ecr_name
         ImageTag       = "latest"
       }
     }

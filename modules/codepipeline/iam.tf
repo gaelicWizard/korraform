@@ -25,7 +25,7 @@ data "template_file" "Korraline" {
     CODESTAR_ARN       = var.codestar_connection
     AWS_DEFAULT_REGION = var.region
     S3_BUCKET          = aws_s3_bucket.Korraline.arn
-    ECR_ARN            = var.ecr
+    ECR_ARN            = var.ecr_arn
   }
 }
 
