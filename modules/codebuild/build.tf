@@ -22,6 +22,11 @@ resource "aws_codebuild_project" "KorraBuild" {
     type                   = "CODEPIPELINE"
   }
 
+  cache {
+    type  = "LOCAL"
+    modes = ["LOCAL_DOCKER_LAYER_CACHE", "LOCAL_SOURCE_CACHE"]
+  }
+
   environment {
     image                       = var.codebuild_params.image
     type                        = var.codebuild_params.type
