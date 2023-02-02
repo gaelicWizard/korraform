@@ -1,0 +1,48 @@
+{
+    "executionRoleArn": "${EXEC_ROLE_ARN}",
+    "containerDefinitions": [
+        {
+            "name": "${PROJECT_NAME}",
+            "image": <IMAGE1_NAME>,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "containerPort": 80
+                }
+            ]
+        },
+        {
+            "name": "${PROJECT_NAME}",
+            "image": <IMAGE2_NAME>,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "containerPort": 80
+                }
+            ]
+        },
+        {
+            "name": "${PROJECT_NAME}",
+            "image": <IMAGE3_NAME>,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "containerPort": 80
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "family": "${PROJECT_NAME}}"
+}
