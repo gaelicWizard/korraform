@@ -11,6 +11,7 @@ phases:
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "${REPOSITORY_URI}"
       - echo '.git' >> .dockerignore
       - codebuild-breakpoint
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
       - echo Build started on `date`
@@ -23,8 +24,9 @@ phases:
       - codebuild-breakpoint
       - echo Pushing the Docker image...
       - docker push --all-tags "${REPOSITORY_URI}$${IMAGE_NAME:+/}$${IMAGE_NAME:-}"
-
+      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
-  files:
-    - '**/*'
-  name: $IMAGE_NAME-$IMAGE_TAG
+    files: imagedefinitions.json
+#  files:
+#    - '**/*'
+#  name: $IMAGE_NAME-$IMAGE_TAG
