@@ -47,6 +47,13 @@ resource "aws_codepipeline" "Korraline" {
 
       configuration = {
         ProjectName = "${var.codebuild_name}"
+        EnvironmentVariables = jsonencode([
+          {
+            name  = "IMAGE_NAME"
+            value = lower("${each.key}")
+            type  = "PLAINTEXT"
+          }
+        ])
       }
     }
   }
