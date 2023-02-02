@@ -15,6 +15,12 @@ resource "aws_codebuild_project" "KorraBuild" {
     buildspec = data.template_file.buildspec.rendered
   }
 
+  lifecycle {
+    ignore_changes = [
+      source[0].git_submodules_config[0].fetch_submodules
+    ]
+  }
+
   artifacts {
     name                   = var.image_name
     override_artifact_name = true
