@@ -106,8 +106,8 @@ resource "aws_codepipeline" "Korraline" {
         TaskDefinitionTemplateArtifact = "image_built"
         TaskDefinitionTemplatePath     = "taskdef.json"
 
-        #Image1ArtifactName = "image_built"
-        #Image1ContainerName = ""
+        Image1ArtifactName = "image_built"
+        Image1ContainerName = "example"
       }
     }
   }
