@@ -2,7 +2,8 @@
    "Statement" : [
       {
          "Action" : [
-            "codestar-connections:UseConnection"
+            "codestar-connections:UseConnection",
+			"codestar-connections:PassConnection"
          ],
          "Effect" : "Allow",
          "Resource" : "${CODESTAR_ARN}",
