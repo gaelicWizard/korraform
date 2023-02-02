@@ -6,7 +6,7 @@ variable "project_name" {
 }
 
 variable "connection_type" {
-    description = "Name of provider for connection, e.g. 'GitHub'"
-    type = string
-    default = "GitHub"
+  description = "Name of provider for connection, e.g. 'GitHub'"
+  type        = string
+  default     = "GitHub"
 }

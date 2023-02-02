@@ -86,28 +86,28 @@ resource "aws_codepipeline" "Korraline" {
     name = "Deploy"
 
     action {
-      name            = "Deploy"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "CodeDeployToECS"
-      version         = "1"
+      name     = "Deploy"
+      category = "Deploy"
+      owner    = "AWS"
+      provider = "CodeDeployToECS"
+      version  = "1"
       input_artifacts = [
-          "source_repo",
-          "image_repo",
-          "image_built"
+        "source_repo",
+        "image_repo",
+        "image_built"
       ]
 
       configuration = {
-        ApplicationName                = var.codedeploy_app
-        DeploymentGroupName            = var.codedeploy_group
+        ApplicationName     = var.codedeploy_app
+        DeploymentGroupName = var.codedeploy_group
 
         AppSpecTemplateArtifact        = "image_repo"
-        AppSpecTemplatePath = "modules/codedeploy/appspec.yaml"
+        AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
         TaskDefinitionTemplateArtifact = "image_repo"
-        TaskDefinitionTemplatePath = "modules/ecs/taskdef.json"
-        
-        Image1ArtifactName = ""
-        Image1ContainerName = ""
+        TaskDefinitionTemplatePath     = "modules/ecs/taskdef.json"
+
+        #Image1ArtifactName = ""
+        #Image1ContainerName = ""
       }
     }
   }
