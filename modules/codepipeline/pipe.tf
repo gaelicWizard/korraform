@@ -22,7 +22,7 @@ resource "aws_codepipeline" "Korraline" {
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
       version          = "1"
-      output_artifacts = ["source_output"]
+      output_artifacts = ["source_repo"]
 
       configuration = {
         ConnectionArn    = var.codestar_connection
@@ -37,7 +37,7 @@ resource "aws_codepipeline" "Korraline" {
       owner            = "AWS"
       provider         = "ECR"
       version          = "1"
-      output_artifacts = ["ecr_info"]
+      output_artifacts = ["image_repo"]
       configuration = {
         RepositoryName = var.ecr_name
         ImageTag       = "latest"
@@ -54,8 +54,8 @@ resource "aws_codepipeline" "Korraline" {
       category         = "Build"
       owner            = "AWS"
       provider         = "CodeBuild"
-      input_artifacts  = ["source_output"]
-      output_artifacts = ["build_output"]
+      input_artifacts  = ["source_repo"]
+      output_artifacts = ["image_built"]
       version          = "1"
 
       configuration = {
@@ -91,7 +91,7 @@ resource "aws_codepipeline" "Korraline" {
       owner           = "AWS"
       provider        = "CodeDeployToECS"
       version         = "1"
-      input_artifacts = ["ecr_info"]
+      input_artifacts = ["image_repo"]
 
       configuration = {
         ApplicationName                = var.codedeploy_app
