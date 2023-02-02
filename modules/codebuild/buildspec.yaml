@@ -6,9 +6,10 @@ env:
 phases:
   pre_build:
     commands:
+      - ls -R ..
       - echo "Logging in to Amazon ECR ($AWS_DEFAULT_REGION)= ${REPOSITORY_URI}..."
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "${REPOSITORY_URI}"
-      - IMAGE_TAG="${CODEBUILD_SOURCE_VERSION:-latest}"
+      - IMAGE_TAG="$${CODEBUILD_SOURCE_VERSION:-latest}"
       - echo '.git' >> .dockerignore
       - codebuild-breakpoint
   build:
