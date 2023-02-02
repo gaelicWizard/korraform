@@ -32,7 +32,7 @@ resource "aws_codepipeline" "Korraline" {
     }
 
     action {
-      name             = "Repository"
+      name             = "Image"
       category         = "Source"
       owner            = "AWS"
       provider         = "ECR"
@@ -91,13 +91,23 @@ resource "aws_codepipeline" "Korraline" {
       owner           = "AWS"
       provider        = "CodeDeployToECS"
       version         = "1"
-      input_artifacts = ["image_repo"]
+      input_artifacts = [
+          "source_repo",
+          "image_repo",
+          "image_built"
+      ]
 
       configuration = {
         ApplicationName                = var.codedeploy_app
         DeploymentGroupName            = var.codedeploy_group
-        TaskDefinitionTemplateArtifact = "build"
-        AppSpecTemplateArtifact        = "build"
+
+        AppSpecTemplateArtifact        = "image_repo"
+        AppSpecTemplatePath = "modules/codedeploy/appspec.yaml"
+        TaskDefinitionTemplateArtifact = "image_repo"
+        TaskDefinitionTemplatePath = "modules/ecs/taskdef.json"
+        
+        Image1ArtifactName = ""
+        Image1ContainerName = ""
       }
     }
   }
