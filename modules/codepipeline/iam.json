@@ -56,9 +56,7 @@
             "ecs:RegisterTaskDefinition"
          ],
          "Effect" : "Allow",
-         "Resource" : [
-            "${CODEDEPLOY_ARN}"
-         ],
+         "Resource" : ${CODEDEPLOY_ARNS},
          "Sid" : "AllowCodeDeployToECS"
       },
       {

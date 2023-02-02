@@ -22,9 +22,9 @@ variable "codebuild_name" {
   type        = string
 }
 
-variable "codedeploy_arn" {
+variable "codedeploy_arns" {
   description = "ARN of the CodeDeploy deployment group"
-  type        = string
+  type        = list(string)
 }
 
 variable "codedeploy_app" {

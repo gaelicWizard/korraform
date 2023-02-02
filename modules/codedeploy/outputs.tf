@@ -6,6 +6,9 @@ output "group" {
   value = aws_codedeploy_deployment_group.Korraploy.deployment_group_name
 }
 
-output "arn" {
-  value = aws_codedeploy_deployment_group.Korraploy.arn
+output "arns" {
+  value = [
+    aws_codedeploy_deployment_group.Korraploy.arn,
+    aws_codedeploy_app.Korraploy.arn
+  ]
 }

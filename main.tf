@@ -47,7 +47,7 @@ module "Korraline" {
   project_name        = local.project_name
   codebuild_arn       = module.KorraBuild.arn
   codebuild_name      = module.KorraBuild.name
-  codedeploy_arn      = module.Korraploy.arn
+  codedeploy_arns     = module.Korraploy.arns
   codedeploy_app      = module.Korraploy.app
   codedeploy_group    = module.Korraploy.group
   codestar_connection = module.KorraStar.codestar_arn

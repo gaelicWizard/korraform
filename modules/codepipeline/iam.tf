@@ -21,7 +21,7 @@ data "template_file" "Korraline" {
   vars = {
     ACCOUNT_ID         = data.aws_caller_identity.default.account_id
     CODEBUILD_ARN      = var.codebuild_arn
-    CODEDEPLOY_ARN     = var.codedeploy_arn
+    CODEDEPLOY_ARNS    = jsonencode(var.codedeploy_arns)
     CODESTAR_ARN       = var.codestar_connection
     AWS_DEFAULT_REGION = var.region
     S3_BUCKET          = aws_s3_bucket.Korraline.arn
