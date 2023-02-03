@@ -26,7 +26,10 @@ phases:
       - docker push --all-tags "${REPOSITORY_URI}$${IMAGE_NAME:+/}$${IMAGE_NAME:-}"
       - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
-    files: imagedefinitions.json
+    files:
+      - imagedefinitions.json
+      - appspec.yaml
+      - taskdef.json
 #  files:
 #    - '**/*'
 #  name: $IMAGE_NAME-$IMAGE_TAG

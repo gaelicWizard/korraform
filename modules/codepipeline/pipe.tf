@@ -101,13 +101,13 @@ resource "aws_codepipeline" "Korraline" {
         ApplicationName     = var.codedeploy_app
         DeploymentGroupName = var.codedeploy_group
 
-        AppSpecTemplateArtifact        = "image_repo"
+        AppSpecTemplateArtifact        = "built_image"
         AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
-        TaskDefinitionTemplateArtifact = "source_repo"
+        TaskDefinitionTemplateArtifact = "built_image"
         TaskDefinitionTemplatePath     = "modules/ecs/taskdef.json"
 
-        Image1ArtifactName  = "built_image"
-        Image1ContainerName = "example"
+        Image1ArtifactName  = "image_repo"
+        Image1ContainerName = "IMAGE1_NAME"
       }
     }
   }
