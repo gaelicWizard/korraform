@@ -92,7 +92,7 @@ resource "aws_codepipeline" "Korraline" {
       provider = "CodeDeployToECS"
       version  = "1"
       input_artifacts = [
-        "source_repo",
+        /*"source_repo",/**/
         "image_repo",
         "built_image"
       ]
@@ -103,8 +103,8 @@ resource "aws_codepipeline" "Korraline" {
 
         AppSpecTemplateArtifact        = "image_repo"
         AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
-        TaskDefinitionTemplateArtifact = "built_image"
-        TaskDefinitionTemplatePath     = "taskdef.json"
+        TaskDefinitionTemplateArtifact = "source_repo"
+        TaskDefinitionTemplatePath     = "modules/ecs/taskdef.json"
 
         Image1ArtifactName  = "built_image"
         Image1ContainerName = "example"
