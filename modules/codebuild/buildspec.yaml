@@ -11,6 +11,7 @@ phases:
       - echo "Logging in to Amazon ECR ($AWS_DEFAULT_REGION)= ${REPOSITORY_URI}..."
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "${REPOSITORY_URI}"
       - echo '.git' >> .dockerignore
+      - printf '[{"name":"hello-world","imageUri":"%s"}]' ${REPOSITORY_URI}:$IMAGE_TAG > imagedefinitions.json
       - codebuild-breakpoint
   build:
     commands:
@@ -24,7 +25,6 @@ phases:
       - codebuild-breakpoint
       - echo Pushing the Docker image...
       - docker push --all-tags "${REPOSITORY_URI}"
-      - printf '[{"name":"hello-world","imageUri":"%s"}]' ${REPOSITORY_URI}:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files:
       - imagedefinitions.json
