@@ -5,7 +5,7 @@ Resources:
       Properties:
         TaskDefinition: <TASK_DEFINITION>
         LoadBalancerInfo:
-          ContainerName: "Korraploy"
+          ContainerName: "Korrapod"
           ContainerPort: "80"
         PlatformVersion: "LATEST"
 #        NetworkConfiguration:
