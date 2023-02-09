@@ -102,7 +102,7 @@ resource "aws_codepipeline" "Korraline" {
         DeploymentGroupName = var.codedeploy_group
 
         AppSpecTemplateArtifact        = "built_image"
-        AppSpecTemplatePath            = "flatspec.yaml"
+        AppSpecTemplatePath            = "modules/codedeploy/appspec.yaml"
         TaskDefinitionTemplateArtifact = "built_image"
         TaskDefinitionTemplatePath     = "flattask.json"
 
