@@ -13,7 +13,7 @@ module "container_definition" {
   container_name  = each.key
   container_image = "${var.repository_url}/${each.key}:latest"
 /**/
-  container_name  = "<IMAGE1_NAME>"
+  container_name  = var.project_name
   container_image = var.repository_url
 
   port_mappings = [
@@ -71,12 +71,12 @@ resource "aws_security_group" "Korrapod" {
 
 resource "aws_ecs_service" "Korrapod" {
   name            = var.project_name
-  task_definition = file("flattask.json") #aws_ecs_task_definition.Korrapod.id
+  task_definition = aws_ecs_task_definition.Korrapod.id
   cluster         = aws_ecs_cluster.Korrapod.arn
 
   load_balancer {
     target_group_arn = var.target_groups[0]
-    container_name   = "Example" #var.containers[0].key #module.container_definition[0].container_name
+    container_name   = var.project_name#"Example" #var.containers[0].key #module.container_definition[0].container_name
     container_port   = 80
   }
 
