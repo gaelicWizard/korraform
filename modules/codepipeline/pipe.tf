@@ -31,19 +31,6 @@ resource "aws_codepipeline" "Korraline" {
         OutputArtifactFormat = "CODEBUILD_CLONE_REF"
       }
     }
-
-    /*action {
-      name             = "Repository"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "ECR"
-      version          = "1"
-      output_artifacts = ["image_repo"]
-      configuration = {
-        RepositoryName = var.ecr_name
-        ImageTag       = "latest"
-      }
-    }/**/
   }
 
   stage {
@@ -63,7 +50,7 @@ resource "aws_codepipeline" "Korraline" {
         ProjectName = "${var.codebuild_name}"
         EnvironmentVariables = jsonencode([
           {
-            name  = "_IMAGE_NAME"
+            name  = "TEST_VAR"
             value = lower("${each.key}")
             type  = "PLAINTEXT"
           }
@@ -94,7 +81,6 @@ resource "aws_codepipeline" "Korraline" {
       version  = "1"
       input_artifacts = [
         /*"source_repo",/**/
-        #"image_repo",
         "built_image"
       ]
 
@@ -108,7 +94,7 @@ resource "aws_codepipeline" "Korraline" {
         TaskDefinitionTemplatePath     = "flattask.json"
 
         Image1ArtifactName  = "built_image"
-        Image1ContainerName = "IMAGE1_NAME"
+        Image1ContainerName = "IMAGE1_NAME"/**/
       }
     }
   }
