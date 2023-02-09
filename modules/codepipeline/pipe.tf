@@ -93,7 +93,7 @@ resource "aws_codepipeline" "Korraline" {
         TaskDefinitionTemplateArtifact = "built_image"
         TaskDefinitionTemplatePath     = "flattask.json"
 
-        Image1ArtifactName  = "built_image"
+        /*Image1ArtifactName  = "built_image"
         Image1ContainerName = "IMAGE1_NAME"/**/
       }
     }

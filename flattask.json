@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "Korrapod",
-            "image": "<IMAGE1_NAME>",
+            "image": "default",
             "essential": true,
             "portMappings": [
                 {
