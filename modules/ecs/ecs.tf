@@ -13,8 +13,8 @@ module "container_definition" {
   container_name  = each.key
   container_image = "${var.repository_url}/${each.key}:latest"
 /**/
-  container_name  = "IMAGE1_NAME"
-  container_image = "${var.repository_url}/IMAGE1_NAME:latest"
+  container_name  = "<IMAGE1_NAME>"
+  container_image = var.repository_url
 
   port_mappings = [
     {
