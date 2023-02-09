@@ -44,6 +44,10 @@ resource "aws_ecs_task_definition" "Korrapod" {
   cpu                      = "256"
   memory                   = "512"
   requires_compatibilities = ["FARGATE"]
+  lifecycle {
+    ignore_changes = [container_definitions]
+  }
+
 }
 
 resource "aws_security_group" "Korrapod" {
@@ -67,7 +71,7 @@ resource "aws_security_group" "Korrapod" {
 
 resource "aws_ecs_service" "Korrapod" {
   name            = var.project_name
-  task_definition = aws_ecs_task_definition.Korrapod.id
+  task_definition = file("flattask.json") #aws_ecs_task_definition.Korrapod.id
   cluster         = aws_ecs_cluster.Korrapod.arn
 
   load_balancer {
