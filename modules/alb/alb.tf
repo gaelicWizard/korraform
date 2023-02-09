@@ -1,14 +1,15 @@
 /* Elastic Load Balancer
- * - Allow access to containers from the internet, over HTTPS
+ * - Allow access to containers from the internet, over HTTP(S)
  */
-resource "aws_security_group" "LoadBalancer" {
-  name   = "allow-${local.project}"
-  vpc_id = local.vpc_id
+resource "aws_security_group" "KorraLoad" {
+  description = "see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html"
+  name        = "allow-${local.project}"
+  vpc_id      = local.vpc_id
 
   ingress {
-    from_port   = 443
+    from_port   = 0 # client-side port doesn't matter
     protocol    = "tcp"
-    to_port     = 443
+    to_port     = local.listener_port
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -22,13 +23,17 @@ resource "aws_security_group" "LoadBalancer" {
   tags = {
     Name = "allow-https-sg"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
-resource "aws_lb" "LoadBalancer" {
+resource "aws_lb" "KorraLoad" {
   name               = local.project
   internal           = false
   load_balancer_type = "application"
-  security_groups    = ["${aws_security_group.LoadBalancer.id}"]
+  security_groups    = ["${aws_security_group.KorraLoad.id}"]
   subnets            = var.subnets
 
   tags = {
@@ -36,7 +41,7 @@ resource "aws_lb" "LoadBalancer" {
   }
 }
 
-resource "aws_lb_target_group" "LoadBalancer" {
+resource "aws_lb_target_group" "KorraLoad" {
   count = length(local.target_groups)
 
   name = "${local.project}-${element(local.target_groups, count.index)}"
@@ -58,37 +63,25 @@ resource "aws_lb_target_group" "LoadBalancer" {
   alb_target_group_arn   = aws_lb_target_group.external-elb.arn
   }/**/
 
-resource "aws_lb_listener" "LoadBalancer" {
-  load_balancer_arn = aws_lb.LoadBalancer.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  certificate_arn   = var.certificate
+resource "aws_lb_listener" "KorraLoad" {
+  load_balancer_arn = aws_lb.KorraLoad.arn
+  port              = local.listener_port
+  protocol          = local.listener_protocol
+  /*certificate_arn   = var.certificate/**/
   /*ssl_policy        = "ELBSecurityPolicy-2016-08"/**/
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.LoadBalancer.*.arn[0]
+    target_group_arn = aws_lb_target_group.KorraLoad.*.arn[0]
   }
 }
 
-resource "aws_route53_record" "LoadBalancer" {
-  zone_id = data.aws_route53_zone.dns.zone_id
-  name    = var.record_name
-  type    = "A"
-
-  alias {
-    name                   = var.alias_name
-    zone_id                = var.alias_zone_id
-    evaluate_target_health = true
-  }
-}
-
-resource "aws_lb_listener_rule" "LoadBalancer" {
-  listener_arn = aws_lb_listener.LoadBalancer.arn
+resource "aws_lb_listener_rule" "KorraLoad" {
+  listener_arn = aws_lb_listener.KorraLoad.arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.LoadBalancer.*.arn[0]
+    target_group_arn = aws_lb_target_group.KorraLoad.*.arn[0]
   }
 
   condition {
