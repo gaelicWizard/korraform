@@ -22,6 +22,7 @@ data "template_file" "KorraBuild" {
   vars = {
     ACCOUNT_ID         = data.aws_caller_identity.default.account_id
     CODEBUILD_NAME     = var.project_name
+    CODESTAR_ARN       = var.codestar_connection
     AWS_DEFAULT_REGION = var.region
     S3_BUCKET          = var.bucket
     ECR_ARN            = var.ecr_arn

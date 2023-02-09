@@ -46,3 +46,4 @@ variable "ecs_arn" {
 }
 
 variable "bucket" {}
+variable "codestar_connection" {}

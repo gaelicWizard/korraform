@@ -69,6 +69,15 @@
 					"Resource": [
 						"${ECS_ARN}"
 					]
+				},
+				{
+					"Effect": "Allow",
+					"Action": [
+						"codestar-connections:UseConnection"
+					],
+					"Resource": [
+						"${CODESTAR_ARN}"
+					]
 				}
     ]
 }

@@ -25,13 +25,14 @@ resource "aws_codepipeline" "Korraline" {
       output_artifacts = ["source_repo"]
 
       configuration = {
-        ConnectionArn    = var.codestar_connection
-        FullRepositoryId = "${each.value.repo}"
-        BranchName       = "${each.value.branch}"
+        ConnectionArn        = var.codestar_connection
+        FullRepositoryId     = "${each.value.repo}"
+        BranchName           = "${each.value.branch}"
+        OutputArtifactFormat = "CODEBUILD_CLONE_REF"
       }
     }
 
-    action {
+    /*action {
       name             = "Repository"
       category         = "Source"
       owner            = "AWS"
@@ -42,7 +43,7 @@ resource "aws_codepipeline" "Korraline" {
         RepositoryName = var.ecr_name
         ImageTag       = "latest"
       }
-    }
+    }/**/
   }
 
   stage {
@@ -93,7 +94,7 @@ resource "aws_codepipeline" "Korraline" {
       version  = "1"
       input_artifacts = [
         /*"source_repo",/**/
-        "image_repo",
+        #"image_repo",
         "built_image"
       ]
 
@@ -106,7 +107,7 @@ resource "aws_codepipeline" "Korraline" {
         TaskDefinitionTemplateArtifact = "built_image"
         TaskDefinitionTemplatePath     = "flattask.json"
 
-        Image1ArtifactName  = "image_repo"
+        Image1ArtifactName  = "built_image"
         Image1ContainerName = "IMAGE1_NAME"
       }
     }

@@ -77,6 +77,7 @@ module "KorraBuild" {
   container_repo        = module.KorraRepo.url
   environment_variables = local.environment_variables
   codebuild_params      = local.codebuild_params
+  codestar_connection   = module.KorraStar.codestar_arn
   region                = local.region
   bucket                = module.Korraline.bucket_name
   ecr_arn               = module.KorraRepo.arn
