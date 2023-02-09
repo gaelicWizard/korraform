@@ -24,7 +24,7 @@ phases:
       - codebuild-breakpoint
       - echo Pushing the Docker image...
       - docker push --all-tags "${REPOSITORY_URI}"
-      - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"hello-world","imageUri":"%s"}]' ${REPOSITORY_URI}:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files:
       - imagedefinitions.json

@@ -2,9 +2,9 @@
  * - Allow access to containers from the internet, over HTTP(S)
  */
 resource "aws_security_group" "KorraLoad" {
-  description = "see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html"
-  name        = "allow-${local.project}"
-  vpc_id      = local.vpc_id
+  # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html
+  name   = "allow-${local.project}"
+  vpc_id = local.vpc_id
 
   ingress {
     from_port   = 0 # client-side port doesn't matter
@@ -37,7 +37,7 @@ resource "aws_lb" "KorraLoad" {
   subnets            = var.subnets
 
   tags = {
-    Name = "example"
+    #Name = "example"
   }
 }
 
