@@ -17,13 +17,13 @@ phases:
       - echo Build started on `date`
       - codebuild-breakpoint
       - echo Building the Docker image...
-      - docker build -t "${REPOSITORY_URI}built_image":latest -t "${REPOSITORY_URI}built_image":"$${CODEBUILD_BUILD_NUMBER:-latest}" -t "${REPOSITORY_URI}built_image":"$${COMMIT_HASH:-latest}" .
+      - docker build -t "${REPOSITORY_URI}":latest -t "${REPOSITORY_URI}":"$${CODEBUILD_BUILD_NUMBER:-latest}" -t "${REPOSITORY_URI}":"$${COMMIT_HASH:-latest}" .
   post_build:
     commands:
       - echo Build completed on `date`
       - codebuild-breakpoint
       - echo Pushing the Docker image...
-      - docker push --all-tags "${REPOSITORY_URI}built_image"
+      - docker push --all-tags "${REPOSITORY_URI}"
       - printf '[{"name":"hello-world","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files:
