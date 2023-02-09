@@ -2,7 +2,7 @@
     "executionRoleArn": "arn:aws:iam::271691277949:role/defaultTask",
     "containerDefinitions": [
         {
-            "name": "Korrapod",
+            "name": "<IMAGE1_NAME>",
             "image": "271691277949.dkr.ecr.us-east-1.amazonaws.com/default/Example:latest",
             "essential": true,
             "portMappings": [
