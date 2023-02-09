@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "Korrapod",
-            "image": "default",
+            "image": "271691277949.dkr.ecr.us-east-1.amazonaws.com/default:latest",
             "essential": true,
             "portMappings": [
                 {
