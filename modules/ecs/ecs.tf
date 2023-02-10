@@ -16,7 +16,7 @@ module "container_definition" {
   container_name  = var.project_name
   container_image = var.repository_url
 
-  port_mappings = [
+  port_mappings = [ # TODO: derive
     {
       containerPort = 80
       hostPort      = 80

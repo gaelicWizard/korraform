@@ -5,7 +5,7 @@
  * - Trigger CodeDeploy,
  *
  * https://aws.amazon.com/blogs/devops/complete-ci-cd-with-aws-codecommit-aws-codebuild-aws-codedeploy-and-aws-codepipeline/
-
+ * https://docs.aws.amazon.com/codepipeline/latest/userguide/ecs-cd-pipeline.html
  */
 resource "aws_iam_role" "Korraline" {
   name               = "${var.project_name}Pipeline"

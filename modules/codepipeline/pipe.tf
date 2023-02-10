@@ -2,6 +2,8 @@
  * - Get source from CodeStar Connection,
  * - Build with CodeBuild,
  * - Deploy through CodeDeploy.
+ *
+ * https://docs.aws.amazon.com/codepipeline/latest/userguide/tutorials-ecs-ecr-codedeploy.html#tutorials-ecs-ecr-codedeploy-taskdefinition
  */
 resource "aws_codepipeline" "Korraline" {
   for_each = var.containers
@@ -72,6 +74,7 @@ resource "aws_codepipeline" "Korraline" {
 
   stage {
     name = "Deploy"
+    /* https://docs.aws.amazon.com/codepipeline/latest/userguide/file-reference.html#file-reference-ecs-bluegreen */
 
     action {
       name     = "YOLO"
