@@ -40,6 +40,7 @@ module "Korrapod" {
   repository_url = module.KorraRepo.url
   containers     = var.deployment
   subnets        = module.vpc.subnet_ids
+  ecr_arn        = module.KorraRepo.arn
 }
 
 module "Korraline" {

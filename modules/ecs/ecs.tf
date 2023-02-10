@@ -76,7 +76,7 @@ resource "aws_ecs_service" "Korrapod" {
 
   load_balancer {
     target_group_arn = var.target_groups[0]
-    container_name   = var.project_name#"Example" #var.containers[0].key #module.container_definition[0].container_name
+    container_name   = var.project_name #"Example" #var.containers[0].key #module.container_definition[0].container_name
     container_port   = 80
   }
 

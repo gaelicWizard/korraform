@@ -22,6 +22,28 @@ data "aws_iam_policy_document" "KorraTask" {
 
     resources = ["${aws_ecs_cluster.Korrapod.arn}"]
   }
+
+  statement {
+    sid    = "AllowECRAuth"
+    effect = "Allow"
+
+    actions = ["ecr:GetAuthorizationToken"]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "AllowECR"
+    effect = "Allow"
+
+    actions = [
+      "ecr:DescribeImages",
+      "ecr:BatchGetImage",
+      "ecr:GetDownloadUrlForLayer"
+    ]
+
+    resources = [var.ecr_arn]
+  }
 }
 
 resource "aws_iam_role" "Korrapod" {

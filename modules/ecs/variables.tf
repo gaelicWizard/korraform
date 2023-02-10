@@ -49,3 +49,5 @@ variable "repository_url" {
   description = "URL of the container registry"
   type        = string
 }
+
+variable "ecr_arn" {}
