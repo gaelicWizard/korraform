@@ -24,6 +24,7 @@ resource "aws_codepipeline" "Korraline" {
       owner            = "AWS"
       provider         = "CodeStarSourceConnection"
       version          = "1"
+      namespace        = "SourceVariables"
       output_artifacts = ["source_repo"]
 
       configuration = {
@@ -54,6 +55,16 @@ resource "aws_codepipeline" "Korraline" {
           {
             name  = "TEST_VAR"
             value = lower("${each.key}")
+            type  = "PLAINTEXT"
+          },
+          {
+            name  = "COMMIT_ID"
+            value = "#{SourceVariables.BranchName}"
+            type  = "PLAINTEXT"
+          },
+          {
+            name  = "BRANCH_NAME"
+            value = "#{SourceVariables.BranchName}"
             type  = "PLAINTEXT"
           }
         ])
