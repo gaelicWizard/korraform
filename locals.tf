@@ -10,7 +10,7 @@ locals {
   subnet_mask    = "28" # 16 subnets of 16 hosts
 
   codebuild_params = {
-    image     = "aws/codebuild/standard:5.0"
+    image     = "aws/codebuild/standard:6.0"
     type      = "LINUX_CONTAINER"
     compute   = "BUILD_GENERAL1_SMALL"
     cred      = "CODEBUILD"
