@@ -1,6 +1,7 @@
 # set variables in CLIENT_NAME.TFVARS file
 locals {
-  project_name = terraform.workspace # TODO: parse the workspace name for PROJECT-INDEX-ENV
+  project_name = var.project_name != "" ? var.project_name : terraform.workspace
+  environment  = terraform.workspace
   region       = var.aws_region
 
   containers     = var.deployment

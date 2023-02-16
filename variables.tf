@@ -1,4 +1,10 @@
 # set variables in CLIENT_NAME.TFVARS file
+variable "project_name" {
+  description = "The name of the client or project"
+  type        = string
+  default     = ""
+}
+
 variable "deployment" {
   description = "GitHub repo and name for each container to build and deploy"
   type        = map(map(string))
