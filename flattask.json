@@ -1,9 +1,9 @@
 {
-    "executionRoleArn": "arn:aws:iam::271691277949:role/defaultTask",
+    "executionRoleArn": "arn:aws:iam::271691277949:role/HALLOTask",
     "containerDefinitions": [
         {
             "name": "Korrapod",
-            "image": "271691277949.dkr.ecr.us-east-1.amazonaws.com/default:latest",
+            "image": "271691277949.dkr.ecr.us-east-1.amazonaws.com/hallo:latest",
             "essential": true,
             "portMappings": [
                 {
