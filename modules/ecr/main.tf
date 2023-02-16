@@ -1,7 +1,7 @@
 /* Elastic Container Registry
  */
 resource "aws_ecr_repository" "KorraRepo" {
-  name = var.project_name
+  name = lower(var.project_name)
   image_scanning_configuration {
     scan_on_push = true
   }
